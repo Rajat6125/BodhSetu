@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BodhSetu — From Government Words to People’s Worlds</title>
+  <meta name="description" content="Understand schemes, find the support you’re eligible for, and take your next step with confidence. BodhSetu makes public services understandable.">
+  
+  <link rel="icon" type="image/png" href="Project_gallery/BodhSetu.png">
+
+  <!-- Google Fonts: Playfair Display for editorial heading, Noto Serif Devanagari for Hindi motto, Plus Jakarta Sans for UI -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ==========================================================================
+       BodhSetu — Responsive Homepage Design System
+       Faithful to Reference Image 1 (Desktop) and Reference Image 2 (Mobile)
+       ========================================================================== */
+
+    :root {
+      /* Brand Color System */
+      --color-bg: #FAF7F2;
+      --color-bg-card: #FFFFFF;
+      --color-navy: #0D233A;
+      --color-navy-dark: #081726;
+      --color-navy-light: #16365C;
+      --color-orange: #DE6B24;
+      --color-orange-hover: #C95A17;
+      --color-orange-light: #FAF0E8;
+      --color-brown-motto: #8D461E;
+      --color-slate: #526373;
+      --color-slate-light: #6C7C8C;
+      --color-border: #D8D2C6;
+      --color-border-subtle: #E8E3DA;
+      --color-border-input: #D4CDC2;
+      --color-teal-sage: #759A91;
+      --color-gold: #E6AE55;
+
+      /* Typography */
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-hindi: 'Noto Serif Devanagari', 'Rozha One', serif;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+      /* Transitions & Shadows */
+      --transition-fast: 0.18s ease;
+      --transition-smooth: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      --shadow-input-focus: 0 0 0 3.5px rgba(222, 107, 36, 0.18);
+      --shadow-btn: 0 4px 14px rgba(222, 107, 36, 0.28);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--color-bg);
+      color: var(--color-navy);
+      line-height: 1.45;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    input {
+      font-family: inherit;
+      font-size: inherit;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* --------------------------------------------------------------------------
+       Decorative Corner Background Flourishes
+       -------------------------------------------------------------------------- */
+    .bg-flourish {
+      position: absolute;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    /* Desktop Flourishes */
+    .flourish-desktop-wrapper {
+      display: block;
+    }
+
+    .bg-flourish-left {
+      left: 0;
+      bottom: 0;
+      width: clamp(260px, 30vw, 420px);
+    }
+
+    .bg-flourish-left svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .bg-flourish-right-desktop {
+      right: 0;
+      bottom: 0;
+      width: clamp(280px, 26vw, 360px);
+    }
+
+    .bg-flourish-right-desktop svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* Mobile Flourishes */
+    .flourish-mobile-wrapper {
+      display: none;
+    }
+
+    .bg-flourish-left-mobile {
+      left: 0;
+      bottom: 0;
+      width: 180px;
+    }
+
+    .bg-flourish-left-mobile svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .bg-flourish-right-mobile {
+      right: 0;
+      bottom: 0;
+      width: 160px;
+    }
+
+    .bg-flourish-right-mobile svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    /* --------------------------------------------------------------------------
+       Page Wrapper & Header
+       -------------------------------------------------------------------------- */
+    .page-wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 1.6rem 2.2rem 2.2rem 2.2rem;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      justify-content: space-between;
+    }
+
+    /* Header */
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 0.85rem;
+      position: relative;
+      z-index: 20;
+      flex-shrink: 0;
+    }
+
+    /* Brand Link (Desktop) */
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+      transition: opacity var(--transition-fast);
+    }
+
+    .brand-link:hover {
+      opacity: 0.9;
+    }
+
+    .logo-mark {
+      width: 52px;
+      height: 34px;
+      flex-shrink: 0;
+    }
+
+    .logo-mark svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .brand-identity {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-family: var(--font-serif);
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: var(--color-navy);
+      line-height: 1.05;
+      letter-spacing: -0.015em;
+    }
+
+    .brand-tagline {
+      font-size: 0.74rem;
+      color: var(--color-slate);
+      letter-spacing: 0.01em;
+      margin-top: 0.15rem;
+      font-weight: 500;
+    }
+
+    /* Header Navigation */
+    .header-nav {
+      display: flex;
+      align-items: center;
+    }
+
+    .desktop-nav-items {
+      display: flex;
+      align-items: center;
+      gap: 1.15rem;
+    }
+
+    /* Language Selector */
+    .lang-selector-wrapper {
+      position: relative;
+    }
+
+    .lang-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: var(--color-navy);
+      font-size: 0.92rem;
+      font-weight: 600;
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      transition: background-color var(--transition-fast), color var(--transition-fast);
+    }
+
+    .lang-btn:hover {
+      background-color: rgba(13, 35, 58, 0.05);
+    }
+
+    .lang-btn:focus-visible {
+      outline: 2px solid var(--color-orange);
+      outline-offset: 2px;
+    }
+
+    .chevron-icon {
+      width: 13px;
+      height: 13px;
+      transition: transform var(--transition-fast);
+    }
+
+    .lang-btn[aria-expanded="true"] .chevron-icon {
+      transform: rotate(180deg);
+    }
+
+    .lang-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      min-width: 170px;
+      background-color: var(--color-bg-card);
+      border: 1px solid var(--color-border-subtle);
+      border-radius: 10px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.12);
+      padding: 0.4rem 0;
+      list-style: none;
+      z-index: 50;
+      opacity: 0;
+      transform: translateY(-6px);
+      pointer-events: none;
+      transition: opacity var(--transition-fast), transform var(--transition-fast);
+    }
+
+    .lang-menu.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .lang-menu li {
+      padding: 0.55rem 1rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--color-navy);
+      cursor: pointer;
+      transition: background var(--transition-fast), color var(--transition-fast);
+    }
+
+    .lang-menu li:hover,
+    .lang-menu li:focus {
+      background-color: var(--color-orange-light);
+      color: var(--color-orange);
+      outline: none;
+    }
+
+    .lang-menu li.active {
+      font-weight: 700;
+      color: var(--color-orange);
+      background-color: rgba(222, 107, 36, 0.06);
+    }
+
+    /* Nav Divider */
+    .nav-divider {
+      color: var(--color-border);
+      font-weight: 300;
+      font-size: 1.1rem;
+      user-select: none;
+    }
+
+    /* About Nav Button */
+    .nav-link-btn {
+      color: var(--color-navy);
+      font-size: 0.92rem;
+      font-weight: 600;
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      transition: color var(--transition-fast), background-color var(--transition-fast);
+    }
+
+    .nav-link-btn:hover {
+      color: var(--color-orange);
+      background-color: rgba(13, 35, 58, 0.05);
+    }
+
+    .nav-link-btn:focus-visible {
+      outline: 2px solid var(--color-orange);
+      outline-offset: 2px;
+    }
+
+    /* Mobile Auth Prompt (Hidden on Desktop) */
+    .mobile-auth-prompt {
+      display: none;
+    }
+
+    /* --------------------------------------------------------------------------
+       Hero Section & Two-Column Layout (Desktop)
+       -------------------------------------------------------------------------- */
+    .hero-section {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem 0 2rem 0;
+      position: relative;
+      z-index: 10;
+    }
+
+    .hero-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.08fr 1fr;
+      align-items: center;
+      gap: clamp(2rem, 4.5vw, 5.5rem);
+    }
+
+    /* Left Column: Visual Illustration */
+    .hero-visual-column {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .illustration-stage {
+      position: relative;
+      width: 100%;
+      max-width: 530px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Concentric Framing Arcs */
+    .arc-flourish {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .arc-outer {
+      width: 106%;
+      height: 106%;
+      border-left: 2.5px solid #E6AE55;
+      border-top: 2.5px solid transparent;
+      border-bottom: 2.5px solid transparent;
+      border-right: 2.5px solid transparent;
+      transform: rotate(-35deg);
+      opacity: 0.55;
+    }
+
+    .arc-inner {
+      width: 114%;
+      height: 114%;
+      border-left: 2px solid #759A91;
+      border-top: 2px solid transparent;
+      border-bottom: 2px solid transparent;
+      border-right: 2.5px solid #DE6B24;
+      transform: rotate(20deg);
+      opacity: 0.35;
+    }
+
+    .illustration-frame {
+      width: 100%;
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .hero-illustration {
+      width: 100%;
+      max-width: 510px;
+      height: auto;
+      display: block;
+      object-fit: contain;
+      filter: drop-shadow(0 15px 35px rgba(13, 35, 58, 0.08));
+      user-select: none;
+      pointer-events: auto;
+      transition: transform var(--transition-smooth);
+    }
+
+    .hero-illustration:hover {
+      transform: scale(1.015);
+    }
+
+    /* Mobile Leaf Divider (Hidden on Desktop) */
+    .mobile-leaf-divider {
+      display: none;
+    }
+
+    /* Right Column: Hero Content & Onboarding Form */
+    .hero-content-column {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 550px;
+    }
+
+    /* Hindi Motto */
+    .motto-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .eyebrow-dash {
+      display: inline-block;
+      width: 32px;
+      height: 2px;
+      background-color: var(--color-orange);
+      border-radius: 2px;
+    }
+
+    .eyebrow-text {
+      font-family: var(--font-hindi);
+      font-size: 1.18rem;
+      font-weight: 600;
+      color: var(--color-brown-motto);
+      letter-spacing: 0.02em;
+    }
+
+    /* Headline (H1) */
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.35rem, 3.8vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1.14;
+      letter-spacing: -0.015em;
+      color: var(--color-navy);
+      margin-bottom: 1.35rem;
+    }
+
+    .hero-title .title-line-1 {
+      display: block;
+    }
+
+    .hero-title .title-line-2 {
+      display: block;
+    }
+
+    .highlight-orange {
+      color: var(--color-orange);
+    }
+
+    /* Subtitle */
+    .hero-subtitle {
+      font-size: 1.05rem;
+      line-height: 1.62;
+      color: var(--color-slate);
+      margin-bottom: 2.2rem;
+      max-width: 470px;
+      font-weight: 400;
+    }
+
+    /* --------------------------------------------------------------------------
+       Get Started Form Card
+       -------------------------------------------------------------------------- */
+    .form-card {
+      width: 100%;
+      max-width: 470px;
+    }
+
+    .form-header {
+      margin-bottom: 0.95rem;
+    }
+
+    .form-title {
+      font-size: 1.16rem;
+      font-weight: 700;
+      color: var(--color-navy);
+      line-height: 1.3;
+    }
+
+    .form-helper {
+      font-size: 0.92rem;
+      color: var(--color-slate-light);
+      margin-top: 0.25rem;
+      font-weight: 400;
+    }
+
+    /* Form */
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.05rem;
+    }
+
+    /* Input Field Wrapper */
+    .input-field-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background-color: #FFFFFF;
+      border: 1.5px solid var(--color-border-input);
+      border-radius: 10px;
+      padding: 0 1rem;
+      height: 54px;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .input-field-wrapper:hover {
+      border-color: #BDB6A8;
+    }
+
+    .input-field-wrapper.focused {
+      border-color: var(--color-orange);
+      box-shadow: var(--shadow-input-focus);
+    }
+
+    .input-field-wrapper.error {
+      border-color: #DC3545;
+      box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15);
+    }
+
+    /* Dual Icons (Email + Mobile) */
+    .field-icons {
+      display: flex;
+      align-items: center;
+      color: var(--color-navy);
+      opacity: 0.85;
+      margin-right: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .icon-mail {
+      width: 19px;
+      height: 19px;
+    }
+
+    .icon-phone {
+      width: 17px;
+      height: 17px;
+    }
+
+    .icon-divider-bar {
+      display: inline-block;
+      width: 1px;
+      height: 16px;
+      background-color: var(--color-border);
+      margin: 0 0.5rem;
+    }
+
+    /* Contact Input */
+    .contact-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--color-navy);
+      font-size: 0.98rem;
+      font-weight: 400;
+      line-height: 1;
+      width: 100%;
+    }
+
+    .contact-input::placeholder {
+      color: #798897;
+      font-weight: 400;
+      opacity: 1;
+    }
+
+    .clear-btn {
+      color: #99A6B2;
+      font-size: 1.25rem;
+      padding: 0.2rem 0.4rem;
+      line-height: 1;
+      transition: color var(--transition-fast);
+    }
+
+    .clear-btn:hover {
+      color: var(--color-navy);
+    }
+
+    /* Inline Validation Feedback */
+    .form-message {
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-top: -0.5rem;
+      min-height: 1.1rem;
+      transition: opacity var(--transition-fast);
+    }
+
+    .form-message.error-text {
+      color: #C53030;
+    }
+
+    .form-message.success-text {
+      color: #2F855A;
+    }
+
+    /* Submit CTA Button */
+    .submit-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      width: 100%;
+      height: 52px;
+      background-color: var(--color-orange);
+      background-image: linear-gradient(180deg, #E2722C 0%, #D8631A 100%);
+      color: #FFFFFF;
+      border-radius: 10px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      box-shadow: var(--shadow-btn);
+      transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      background-image: linear-gradient(180deg, #D8641A 0%, #C85610 100%);
+      box-shadow: 0 6px 16px rgba(222, 107, 36, 0.38);
+      transform: translateY(-1px);
+    }
+
+    .submit-btn:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 6px rgba(222, 107, 36, 0.3);
+    }
+
+    .submit-btn:focus-visible {
+      outline: 3px solid var(--color-navy);
+      outline-offset: 2px;
+    }
+
+    .btn-arrow {
+      font-size: 1.15rem;
+      transition: transform var(--transition-fast);
+    }
+
+    .submit-btn:hover .btn-arrow {
+      transform: translateX(4px);
+    }
+
+    /* --------------------------------------------------------------------------
+       Modals (About & Sign In)
+       -------------------------------------------------------------------------- */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(13, 35, 58, 0.55);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition-fast);
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      position: relative;
+      background-color: var(--color-bg-card);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 520px;
+      padding: 1.75rem 2rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      transform: scale(0.95);
+      transition: transform var(--transition-smooth);
+    }
+
+    .modal-backdrop.open .modal-card {
+      transform: scale(1);
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 1.1rem;
+      right: 1.1rem;
+      font-size: 1.6rem;
+      color: var(--color-slate);
+      line-height: 1;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color var(--transition-fast), color var(--transition-fast);
+    }
+
+    .modal-close-btn:hover {
+      background-color: var(--color-border-subtle);
+      color: var(--color-navy);
+    }
+
+    .modal-badge {
+      display: inline-block;
+      background-color: var(--color-orange-light);
+      color: var(--color-orange);
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.22rem 0.6rem;
+      border-radius: 20px;
+      margin-bottom: 0.65rem;
+    }
+
+    .modal-title {
+      font-family: var(--font-serif);
+      font-size: 1.45rem;
+      color: var(--color-navy);
+      line-height: 1.25;
+      margin-bottom: 0.75rem;
+    }
+
+    .modal-desc {
+      font-size: 0.9rem;
+      color: var(--color-slate);
+      margin-bottom: 1.15rem;
+    }
+
+    .modal-body p {
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: var(--color-slate);
+      margin-bottom: 0.85rem;
+    }
+
+    .modal-pillars {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      background-color: var(--color-bg);
+      padding: 0.9rem 1.15rem;
+      border-radius: 12px;
+    }
+
+    .pillar-item {
+      display: flex;
+      gap: 0.65rem;
+      align-items: flex-start;
+      font-size: 0.86rem;
+      color: var(--color-navy);
+    }
+
+    .pillar-bullet {
+      color: var(--color-orange);
+      font-weight: bold;
+    }
+
+    .modal-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-top: 0.5rem;
+    }
+
+    .modal-label {
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--color-navy);
+    }
+
+    .modal-input {
+      border: 1.5px solid var(--color-border-input);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .modal-input:focus {
+      border-color: var(--color-orange);
+      box-shadow: var(--shadow-input-focus);
+    }
+
+    .modal-footer {
+      margin-top: 1.25rem;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .btn-secondary {
+      background-color: var(--color-navy);
+      color: #FFFFFF;
+      padding: 0.6rem 1.3rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: background-color var(--transition-fast);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--color-navy-light);
+    }
+
+    /* Toast Notification System */
+    .toast-container {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 150;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      pointer-events: none;
+    }
+
+    .toast {
+      background-color: var(--color-navy);
+      color: #FFFFFF;
+      padding: 0.8rem 1.2rem;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: toastIn 0.3s forwards ease;
+      pointer-events: auto;
+    }
+
+    .toast.toast-success {
+      border-left: 4px solid #38A169;
+    }
+
+    .toast.toast-info {
+      border-left: 4px solid var(--color-orange);
+    }
+
+    @keyframes toastIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* --------------------------------------------------------------------------
+       Tablet / Intermediate Screens (769px - 1024px)
+       -------------------------------------------------------------------------- */
+    @media (max-width: 1024px) and (min-width: 769px) {
+      .page-wrapper {
+        padding: 1.25rem 1.75rem 2rem 1.75rem;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2.2rem;
+      }
+
+      .hero-title {
+        font-size: 2.45rem;
+      }
+
+      .hero-subtitle {
+        font-size: 1rem;
+        margin-bottom: 1.8rem;
+      }
+
+      .illustration-stage {
+        max-width: 420px;
+      }
+
+      .bg-flourish-right-desktop {
+        width: 250px;
+      }
+    }
+
+    /* --------------------------------------------------------------------------
+       Mobile Viewport (<= 768px)
+       Strict adherence to Reference Image 2:
+       Cohesive, harmonious vertical rhythm — no awkward empty gaps,
+       with the Continue button clearly visible!
+       -------------------------------------------------------------------------- */
+    @media (max-width: 768px) {
+      /* Toggle corner flourishes */
+      .flourish-desktop-wrapper {
+        display: none !important;
+      }
+
+      .flourish-mobile-wrapper {
+        display: block !important;
+      }
+
+      /* Page Wrapper */
+      .page-wrapper {
+        padding: 0.85rem 1.25rem 2rem 1.25rem;
+        min-height: 100vh;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+
+      /* Top Header: "Already have an account? Sign In ->" */
+      .site-header {
+        justify-content: flex-end;
+        padding-bottom: 0.4rem;
+        min-height: unset;
+      }
+
+      .brand-link {
+        display: none;
+      }
+
+      .desktop-nav-items {
+        display: none;
+      }
+
+      .mobile-auth-prompt {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        font-size: 0.88rem;
+      }
+
+      .prompt-text {
+        color: var(--color-navy);
+        font-weight: 500;
+      }
+
+      .sign-in-btn {
+        color: var(--color-orange);
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.15rem 0;
+      }
+
+      .sign-in-btn .arrow {
+        font-size: 0.92rem;
+      }
+
+      /* Hero Section: Centered, unified vertical stack matching Reference 2 */
+      .hero-section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 0.4rem 0 1rem 0;
+      }
+
+      .hero-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 380px;
+        margin: 0 auto;
+        gap: 0;
+      }
+
+      /* Hero Visual Illustration */
+      .hero-visual-column {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+
+      .illustration-stage {
+        width: 100%;
+        max-width: 210px;
+        margin: 0 auto;
+      }
+
+      .hero-illustration {
+        width: 100%;
+        max-width: clamp(165px, 24vh, 205px);
+        height: auto;
+        display: block;
+        margin: 0 auto;
+        filter: drop-shadow(0 6px 14px rgba(13, 35, 58, 0.07));
+      }
+
+      .arc-outer, .arc-inner {
+        display: none;
+      }
+
+      /* Mobile Leaf Divider (— 🍃 —) sitting intimately below the book */
+      .mobile-leaf-divider {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.65rem;
+        width: 100%;
+        max-width: 130px;
+        margin: 0 auto 0.45rem auto;
+      }
+
+      .divider-line {
+        flex: 1;
+        height: 1.5px;
+        background-color: #D2CDC3;
+        border-radius: 1px;
+      }
+
+      .leaf-icon-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+      }
+
+      .leaf-icon {
+        width: 16px;
+        height: 16px;
+        display: block;
+        transform: rotate(5deg);
+      }
+
+      /* Hero Content Column */
+      .hero-content-column {
+        max-width: 100%;
+        width: 100%;
+        align-items: center;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Centered Hindi Motto */
+      .motto-eyebrow {
+        margin-bottom: 0.35rem;
+        justify-content: center;
+      }
+
+      .eyebrow-dash {
+        display: none;
+      }
+
+      .eyebrow-text {
+        font-size: 1.12rem;
+        font-weight: 600;
+        color: var(--color-brown-motto);
+        text-align: center;
+      }
+
+      /* Centered Headline */
+      .hero-title {
+        font-size: 1.82rem;
+        line-height: 1.18;
+        text-align: center;
+        margin-bottom: 0.45rem;
+        letter-spacing: -0.015em;
+      }
+
+      .hero-title .title-line-1 {
+        display: block;
+      }
+
+      .hero-title .title-line-2 {
+        display: block;
+      }
+
+      /* Centered Subtitle */
+      .hero-subtitle {
+        font-size: 0.86rem;
+        line-height: 1.42;
+        text-align: center;
+        margin: 0 auto 0.85rem auto;
+        max-width: 320px;
+        color: var(--color-slate);
+      }
+
+      /* Form Card */
+      .form-card {
+        max-width: 360px;
+        width: 100%;
+        text-align: left;
+        margin: 0 auto;
+      }
+
+      .form-header {
+        text-align: left;
+        margin-bottom: 0.45rem;
+      }
+
+      .form-title {
+        font-size: 1.05rem;
+      }
+
+      .form-helper {
+        font-size: 0.82rem;
+        margin-top: 0.12rem;
+      }
+
+      .auth-form {
+        gap: 0.6rem;
+      }
+
+      /* Full-width Input & Button */
+      .input-field-wrapper {
+        height: 46px;
+        padding: 0 0.85rem;
+      }
+
+      .field-icons {
+        margin-right: 0.65rem;
+      }
+
+      .icon-mail {
+        width: 17px;
+        height: 17px;
+      }
+
+      .icon-phone {
+        width: 15px;
+        height: 15px;
+      }
+
+      .icon-divider-bar {
+        height: 14px;
+        margin: 0 0.45rem;
+      }
+
+      .contact-input {
+        font-size: 0.92rem;
+      }
+
+      .contact-input::placeholder {
+        font-size: 0.86rem;
+      }
+
+      .submit-btn {
+        height: 46px;
+        font-size: 0.98rem;
+      }
+
+      .form-message {
+        font-size: 0.8rem;
+        margin-top: -0.35rem;
+        min-height: 0.95rem;
+      }
+    }
+
+    /* Small screens (<= 360px) */
+    @media (max-width: 360px) {
+      .hero-illustration {
+        max-width: 200px;
+      }
+
+      .hero-title {
+        font-size: 1.65rem;
+      }
+
+      .hero-subtitle {
+        font-size: 0.82rem;
+      }
+
+      .input-field-wrapper, .submit-btn {
+        height: 44px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- =========================================================================
+       Decorative Corner Background Flourishes
+       ========================================================================= -->
+
+  <!-- Desktop Corner Flourishes (>= 769px) -->
+  <div class="flourish-desktop-wrapper" aria-hidden="true">
+    <div class="bg-flourish bg-flourish-left">
+      <svg viewBox="0 0 380 240" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M-50 240C20 190 140 180 270 225C310 238 350 235 380 230C340 215 290 195 230 195C110 195 30 225 -50 240Z" fill="#E6AE55" fill-opacity="0.5"/>
+        <path d="M-50 240C30 170 160 145 310 205C345 220 370 225 380 228C335 198 270 170 180 175C75 180 5 225 -50 240Z" fill="#759A91" fill-opacity="0.45"/>
+        <path d="M-30 240C40 195 130 190 240 232C210 220 155 205 90 210C25 215 -15 235 -30 240Z" fill="#DE6B24" fill-opacity="0.32"/>
+      </svg>
+    </div>
+
+    <div class="bg-flourish bg-flourish-right-desktop">
+      <svg viewBox="0 0 320 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M40 280C100 255 200 240 360 265C320 240 220 225 130 245C80 258 50 270 40 280Z" fill="#759A91" fill-opacity="0.4"/>
+        <path d="M120 280C170 265 260 255 360 275C310 255 230 248 170 262C140 270 125 276 120 280Z" fill="#E6AE55" fill-opacity="0.45"/>
+        <g>
+          <path d="M330 270C295 225 260 165 240 95" stroke="#759A91" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M240 95C234 68 242 42 246 32C254 48 260 74 240 95Z" fill="#759A91" fill-opacity="0.8"/>
+          <path d="M255 118C280 102 312 102 324 105C312 120 290 130 255 118Z" fill="#E6AE55" fill-opacity="0.82"/>
+          <path d="M246 148C220 138 190 148 180 156C198 165 226 166 246 148Z" fill="#759A91" fill-opacity="0.75"/>
+          <path d="M272 170C298 158 328 165 338 172C322 186 294 188 272 170Z" fill="#759A91" fill-opacity="0.75"/>
+          <path d="M282 202C260 196 232 210 224 218C242 224 268 221 282 202Z" fill="#E6AE55" fill-opacity="0.8"/>
+          <path d="M310 224C332 218 355 226 360 230C346 241 326 241 310 224Z" fill="#DE6B24" fill-opacity="0.65"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Mobile Corner Flourishes (<= 768px) -->
+  <div class="flourish-mobile-wrapper" aria-hidden="true">
+    <div class="bg-flourish bg-flourish-left-mobile">
+      <svg viewBox="0 0 220 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M-20 100C40 70 120 75 220 100C160 85 90 80 -20 100Z" fill="#759A91" fill-opacity="0.45"/>
+        <path d="M-20 100C30 82 80 84 160 100C110 90 50 88 -20 100Z" fill="#E6AE55" fill-opacity="0.5"/>
+      </svg>
+    </div>
+    <div class="bg-flourish bg-flourish-right-mobile">
+      <svg viewBox="0 0 220 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M240 100C180 70 100 75 0 100C60 85 130 80 240 100Z" fill="#759A91" fill-opacity="0.45"/>
+        <path d="M240 100C190 82 140 84 60 100C110 90 170 88 240 100Z" fill="#E6AE55" fill-opacity="0.5"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="page-wrapper">
+    <!-- Top Navigation Header -->
+    <header class="site-header" id="siteHeader">
+      <!-- Desktop Brand Logo -->
+      <a href="#" class="brand-link" id="brandLink" aria-label="BodhSetu Homepage">
+        <div class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 23C16 14.16 23.16 7 32 7C40.84 7 48 14.16 48 23" stroke="#DE6B24" stroke-width="4.2" stroke-linecap="round"/>
+            <path d="M24 23C24 18.58 27.58 15 32 15C36.42 15 40 18.58 40 23" fill="#E59B35"/>
+            <path d="M4 33.5C15 29.5 25.5 30.5 32 35.5C38.5 30.5 49 29.5 60 33.5C54 28 44 25 32 27C20 25 10 28 4 33.5Z" fill="#0D233A"/>
+            <path d="M4 34.5C15 28.5 25.5 29.5 32 35C38.5 29.5 49 28.5 60 34.5C57.5 37 48 39.5 32 37C16 39.5 6.5 37 4 34.5Z" fill="#143152"/>
+          </svg>
+        </div>
+        <div class="brand-identity">
+          <span class="brand-name">BodhSetu</span>
+          <span class="brand-tagline">Public services, made understandable</span>
+        </div>
+      </a>
+
+      <!-- Header Navigation Controls -->
+      <nav class="header-nav" aria-label="Main Navigation">
+        <!-- Mobile "Already have an account? Sign In ->" item -->
+        <div class="mobile-auth-prompt" id="mobileAuthPrompt">
+          <span class="prompt-text">Already have an account?</span>
+          <button type="button" class="sign-in-btn" id="mobileSignInBtn">Sign In <span class="arrow" aria-hidden="true">→</span></button>
+        </div>
+
+        <!-- Desktop Navigation Items -->
+        <div class="desktop-nav-items">
+          <!-- Language Selector Dropdown -->
+          <div class="lang-selector-wrapper">
+            <button type="button" class="lang-btn" id="langSelectorBtn" aria-expanded="false" aria-haspopup="listbox" aria-label="Select language">
+              <span id="currentLangLabel">English</span>
+              <svg class="chevron-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <ul class="lang-menu" id="langMenu" role="listbox" aria-label="Available languages" hidden>
+              <li role="option" aria-selected="true" data-lang="en" class="active">English</li>
+              <li role="option" aria-selected="false" data-lang="hi">हिन्दी (Hindi)</li>
+              <li role="option" aria-selected="false" data-lang="bn">বাংলা (Bengali)</li>
+              <li role="option" aria-selected="false" data-lang="mr">मराठी (Marathi)</li>
+              <li role="option" aria-selected="false" data-lang="te">తెలుగు (Telugu)</li>
+              <li role="option" aria-selected="false" data-lang="ta">தமிழ் (Tamil)</li>
+            </ul>
+          </div>
+
+          <span class="nav-divider" aria-hidden="true">|</span>
+
+          <button type="button" class="nav-link-btn" id="aboutNavBtn">About</button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Hero Section -->
+    <main class="hero-section" id="mainContent">
+      <div class="hero-grid">
+        
+        <!-- Hero Illustration -->
+        <div class="hero-visual-column">
+          <div class="illustration-stage">
+            <div class="arc-flourish arc-outer" aria-hidden="true"></div>
+            <div class="arc-flourish arc-inner" aria-hidden="true"></div>
+
+            <div class="illustration-frame">
+              <img 
+                src="Project_gallery/BodhSetu.png" 
+                alt="Illustration of an Indian family rising together with an open book of civic knowledge" 
+                class="hero-illustration"
+                id="heroIllustration"
+                loading="eager"
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile Decorative Leaf Divider (Strictly matching Reference Image 2: — 🍃 —) -->
+        <div class="mobile-leaf-divider" aria-hidden="true">
+          <span class="divider-line"></span>
+          <div class="leaf-icon-container">
+            <svg class="leaf-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 20C4 20 5.5 14 11 9C16.5 4 21 3 21 3C21 3 20 7.5 15 13C10 18.5 4 20 4 20Z" fill="#2E5C44"/>
+              <path d="M4 20C8 16 13 11 21 3" stroke="#FAF7F2" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <span class="divider-line"></span>
+        </div>
+
+        <!-- Content and Onboarding Action -->
+        <div class="hero-content-column">
+          <!-- Hindi Motto & Eyebrow -->
+          <div class="motto-eyebrow">
+            <span class="eyebrow-dash" aria-hidden="true"></span>
+            <span class="eyebrow-text" id="eyebrowText">नियम से बोध तक।</span>
+          </div>
+
+          <!-- Main Editorial Headline -->
+          <h1 class="hero-title" id="heroTitle">
+            <span class="title-line-1">From Government Words</span>
+            <span class="title-line-2">to <span class="highlight-orange">People’s Worlds.</span></span>
+          </h1>
+
+          <!-- Subtitle / Value Proposition -->
+          <p class="hero-subtitle" id="heroSubtitle">
+            Understand schemes, find the support you’re eligible for, and take your next step with confidence.
+          </p>
+
+          <!-- Input Action Card -->
+          <div class="form-card">
+            <div class="form-header">
+              <h2 class="form-title" id="formTitle">Get started with BodhSetu</h2>
+              <p class="form-helper" id="formHelper">Enter your email address or mobile number.</p>
+            </div>
+
+            <form class="auth-form" id="getStartedForm" novalidate>
+              <div class="input-field-wrapper" id="inputFieldWrapper">
+                <!-- Dual Icon (Email + Mobile Device) matching reference -->
+                <div class="field-icons" aria-hidden="true">
+                  <!-- Mail Icon -->
+                  <svg class="icon-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                    <path d="M22 6L12 13L2 6"></path>
+                  </svg>
+                  <span class="icon-divider-bar"></span>
+                  <!-- Mobile Phone Icon -->
+                  <svg class="icon-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="5" y="2" width="14" height="20" rx="2.5"></rect>
+                    <line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5"></line>
+                  </svg>
+                </div>
+
+                <!-- Input Element -->
+                <input 
+                  type="text" 
+                  id="contactInput" 
+                  name="contact" 
+                  class="contact-input" 
+                  placeholder="Email address or mobile number" 
+                  autocomplete="username" 
+                  aria-label="Email address or mobile number"
+                  required
+                >
+                <button type="button" class="clear-btn" id="clearInputBtn" aria-label="Clear input" hidden>&times;</button>
+              </div>
+
+              <!-- Inline Validation / Status Message -->
+              <div class="form-message" id="formMessage" role="status" aria-live="polite"></div>
+
+              <!-- Primary CTA Button -->
+              <button type="submit" class="submit-btn" id="submitBtn">
+                <span class="btn-text">Continue</span>
+                <span class="btn-arrow" aria-hidden="true">→</span>
+              </button>
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Accessible "About BodhSetu" Modal Dialog -->
+  <div class="modal-backdrop" id="aboutModal" role="dialog" aria-modal="true" aria-labelledby="aboutModalTitle" hidden>
+    <div class="modal-card">
+      <button type="button" class="modal-close-btn" id="closeAboutModalBtn" aria-label="Close dialog">&times;</button>
+      <div class="modal-header">
+        <div class="modal-badge">About BodhSetu</div>
+        <h3 id="aboutModalTitle" class="modal-title">Making Public Services Truly Understandable</h3>
+      </div>
+      <div class="modal-body">
+        <p>
+          <strong>BodhSetu</strong> (बोधसेतु — <em>Bridge of Understanding</em>) transforms complex governmental circulars and welfare schemes into clear, actionable, citizen-first guidance.
+        </p>
+        <p>
+          Every citizen deserves dignified, transparent access to welfare rights, educational stipends, healthcare subsidies, and civic benefits without administrative friction or confusing legalese.
+        </p>
+        <div class="modal-pillars">
+          <div class="pillar-item">
+            <span class="pillar-bullet">✓</span>
+            <div>
+              <strong>Simplified Language:</strong> Clear terms in your native language, free of jargon.
+            </div>
+          </div>
+          <div class="pillar-item">
+            <span class="pillar-bullet">✓</span>
+            <div>
+              <strong>Instant Eligibility:</strong> Answer simple questions to find which welfare schemes you qualify for.
+            </div>
+          </div>
+          <div class="pillar-item">
+            <span class="pillar-bullet">✓</span>
+            <div>
+              <strong>Step-by-Step Guidance:</strong> Complete roadmaps from document preparation to application submission.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" id="modalDismissBtn">Got it</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sign In Modal Dialog -->
+  <div class="modal-backdrop" id="signInModal" role="dialog" aria-modal="true" aria-labelledby="signInModalTitle" hidden>
+    <div class="modal-card">
+      <button type="button" class="modal-close-btn" id="closeSignInModalBtn" aria-label="Close dialog">&times;</button>
+      <div class="modal-header">
+        <div class="modal-badge">Welcome Back</div>
+        <h3 id="signInModalTitle" class="modal-title">Sign in to BodhSetu</h3>
+        <p class="modal-desc">Access your saved schemes, applications, and documents.</p>
+      </div>
+      <div class="modal-body">
+        <form id="modalSignInForm" novalidate>
+          <div class="modal-field">
+            <label for="modalContactInput" class="modal-label">Email or Mobile Number</label>
+            <input type="text" id="modalContactInput" class="modal-input" placeholder="e.g., name@example.com or 9876543210" required>
+          </div>
+          <button type="submit" class="submit-btn" style="width: 100%; margin-top: 1.25rem;">
+            <span>Send OTP / Login</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container for Live Feedback -->
+  <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Interactive JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Elements
+      const authForm = document.getElementById('getStartedForm');
+      const contactInput = document.getElementById('contactInput');
+      const inputWrapper = document.getElementById('inputFieldWrapper');
+      const clearInputBtn = document.getElementById('clearInputBtn');
+      const formMessage = document.getElementById('formMessage');
+      const submitBtn = document.getElementById('submitBtn');
+
+      // Language Dropdown
+      const langSelectorBtn = document.getElementById('langSelectorBtn');
+      const langMenu = document.getElementById('langMenu');
+      const currentLangLabel = document.getElementById('currentLangLabel');
+
+      // Modals
+      const aboutNavBtn = document.getElementById('aboutNavBtn');
+      const aboutModal = document.getElementById('aboutModal');
+      const closeAboutModalBtn = document.getElementById('closeAboutModalBtn');
+      const modalDismissBtn = document.getElementById('modalDismissBtn');
+
+      const mobileSignInBtn = document.getElementById('mobileSignInBtn');
+      const signInModal = document.getElementById('signInModal');
+      const closeSignInModalBtn = document.getElementById('closeSignInModalBtn');
+      const modalSignInForm = document.getElementById('modalSignInForm');
+
+      const toastContainer = document.getElementById('toastContainer');
+
+      // Translatable Content Elements
+      const heroTitle = document.getElementById('heroTitle');
+      const heroSubtitle = document.getElementById('heroSubtitle');
+      const formTitle = document.getElementById('formTitle');
+      const formHelper = document.getElementById('formHelper');
+
+      // Translations Dictionary
+      const translations = {
+        en: {
+          langLabel: 'English',
+          title: '<span class="title-line-1">From Government Words</span> <span class="title-line-2">to <span class="highlight-orange">People’s Worlds.</span></span>',
+          subtitle: 'Understand schemes, find the support you’re eligible for, and take your next step with confidence.',
+          formTitle: 'Get started with BodhSetu',
+          formHelper: 'Enter your email address or mobile number.',
+          inputPlaceholder: 'Email address or mobile number',
+          btnText: 'Continue',
+          aboutText: 'About',
+          signInText: 'Sign In'
+        },
+        hi: {
+          langLabel: 'हिन्दी',
+          title: '<span class="title-line-1">सरकारी शब्दों से</span> <span class="title-line-2"><span class="highlight-orange">जन-जन की दुनिया तक।</span></span>',
+          subtitle: 'योजनाओं को आसानी से समझें, अपनी पात्रता जानें, और पूरे विश्वास के साथ अपना अगला कदम उठाएं।',
+          formTitle: 'बोधसेतु के साथ शुरुआत करें',
+          formHelper: 'अपना ईमेल पता या मोबाइल नंबर दर्ज करें।',
+          inputPlaceholder: 'ईमेल पता या मोबाइल नंबर',
+          btnText: 'आगे बढ़ें',
+          aboutText: 'परिचय',
+          signInText: 'साइन इन'
+        }
+      };
+
+      // 2. Input Handling & Live Validation
+      contactInput.addEventListener('focus', () => {
+        inputWrapper.classList.add('focused');
+      });
+
+      contactInput.addEventListener('blur', () => {
+        inputWrapper.classList.remove('focused');
+      });
+
+      contactInput.addEventListener('input', () => {
+        const val = contactInput.value.trim();
+        clearInputBtn.hidden = val.length === 0;
+
+        if (inputWrapper.classList.contains('error')) {
+          inputWrapper.classList.remove('error');
+          formMessage.textContent = '';
+          formMessage.className = 'form-message';
+        }
+      });
+
+      clearInputBtn.addEventListener('click', () => {
+        contactInput.value = '';
+        clearInputBtn.hidden = true;
+        contactInput.focus();
+        inputWrapper.classList.remove('error');
+        formMessage.textContent = '';
+      });
+
+      function validateContact(input) {
+        const cleaned = input.trim();
+        if (!cleaned) {
+          return { valid: false, message: 'Please enter your email address or mobile number.' };
+        }
+
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const digitsOnly = cleaned.replace(/[\s\-\+]/g, '');
+
+        if (/^\d+$/.test(digitsOnly)) {
+          if (digitsOnly.length === 10 || (digitsOnly.length === 12 && digitsOnly.startsWith('91'))) {
+            return { valid: true, type: 'phone', formatted: digitsOnly.slice(-10) };
+          } else {
+            return { valid: false, message: 'Please enter a valid 10-digit mobile number.' };
+          }
+        }
+
+        if (emailPattern.test(cleaned)) {
+          return { valid: true, type: 'email', formatted: cleaned.toLowerCase() };
+        }
+
+        return { valid: false, message: 'Please enter a valid email address or 10-digit mobile number.' };
+      }
+
+      // 3. Form Submission Handling
+      authForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const result = validateContact(contactInput.value);
+
+        if (!result.valid) {
+          inputWrapper.classList.add('error');
+          formMessage.textContent = result.message;
+          formMessage.className = 'form-message error-text';
+          contactInput.focus();
+          return;
+        }
+
+        inputWrapper.classList.remove('error');
+        formMessage.className = 'form-message success-text';
+        
+        const originalText = submitBtn.querySelector('.btn-text').textContent;
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.85';
+        submitBtn.querySelector('.btn-text').textContent = 'Connecting...';
+
+        setTimeout(() => {
+          submitBtn.disabled = false;
+          submitBtn.style.opacity = '1';
+          submitBtn.querySelector('.btn-text').textContent = originalText;
+
+          const identifier = result.type === 'phone' ? `+91 ${result.formatted}` : result.formatted;
+          showToast(`Verification code sent to ${identifier}!`, 'success');
+          
+          formMessage.textContent = `A verification code has been dispatched to ${identifier}.`;
+        }, 850);
+      });
+
+      // 4. Language Selector Dropdown
+      langSelectorBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isExpanded = langSelectorBtn.getAttribute('aria-expanded') === 'true';
+        toggleLangMenu(!isExpanded);
+      });
+
+      function toggleLangMenu(open) {
+        langSelectorBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        if (open) {
+          langMenu.hidden = false;
+          requestAnimationFrame(() => {
+            langMenu.classList.add('show');
+          });
+        } else {
+          langMenu.classList.remove('show');
+          setTimeout(() => {
+            if (!langMenu.classList.contains('show')) {
+              langMenu.hidden = true;
+            }
+          }, 180);
+        }
+      }
+
+      document.addEventListener('click', (e) => {
+        if (!langSelectorBtn.contains(e.target) && !langMenu.contains(e.target)) {
+          toggleLangMenu(false);
+        }
+      });
+
+      langMenu.querySelectorAll('li').forEach(item => {
+        item.addEventListener('click', () => {
+          const langCode = item.getAttribute('data-lang');
+          const langName = item.textContent.split(' ')[0];
+
+          langMenu.querySelectorAll('li').forEach(li => {
+            li.classList.remove('active');
+            li.setAttribute('aria-selected', 'false');
+          });
+          item.classList.add('active');
+          item.setAttribute('aria-selected', 'true');
+
+          currentLangLabel.textContent = langName;
+          toggleLangMenu(false);
+
+          applyTranslation(langCode);
+          showToast(`Language switched to ${item.textContent}`, 'info');
+        });
+      });
+
+      function applyTranslation(lang) {
+        const t = translations[lang] || translations.en;
+        heroTitle.innerHTML = t.title;
+        heroSubtitle.textContent = t.subtitle;
+        formTitle.textContent = t.formTitle;
+        formHelper.textContent = t.formHelper;
+        contactInput.placeholder = t.inputPlaceholder;
+        submitBtn.querySelector('.btn-text').textContent = t.btnText;
+      }
+
+      // 5. Accessible Modals (About & Sign In)
+      function openModal(modal) {
+        modal.hidden = false;
+        requestAnimationFrame(() => {
+          modal.classList.add('open');
+        });
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal(modal) {
+        modal.classList.remove('open');
+        setTimeout(() => {
+          modal.hidden = true;
+          document.body.style.overflow = '';
+        }, 250);
+      }
+
+      aboutNavBtn.addEventListener('click', () => openModal(aboutModal));
+      closeAboutModalBtn.addEventListener('click', () => closeModal(aboutModal));
+      modalDismissBtn.addEventListener('click', () => closeModal(aboutModal));
+
+      mobileSignInBtn.addEventListener('click', () => openModal(signInModal));
+      closeSignInModalBtn.addEventListener('click', () => closeModal(signInModal));
+
+      [aboutModal, signInModal].forEach(modal => {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) {
+            closeModal(modal);
+          }
+        });
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          if (!aboutModal.hidden) closeModal(aboutModal);
+          if (!signInModal.hidden) closeModal(signInModal);
+          toggleLangMenu(false);
+        }
+      });
+
+      modalSignInForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const inputVal = document.getElementById('modalContactInput').value.trim();
+        if (!inputVal) return;
+        
+        closeModal(signInModal);
+        showToast('Sign in link/OTP dispatched!', 'success');
+      });
+
+      // 6. Toast Notification Helper
+      function showToast(message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.textContent = message;
+
+        toastContainer.appendChild(toast);
+
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateY(10px)';
+          toast.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+          setTimeout(() => toast.remove(), 300);
+        }, 3200);
+      }
+    });
+  </script>
+</body>
+</html>
