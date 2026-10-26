@@ -1056,7 +1056,6 @@
         display: none;
       }
 
-      /* Mobile Leaf Divider (— 🍃 —) sitting intimately below the book */
       .mobile-leaf-divider {
         display: flex;
         align-items: center;
@@ -1089,7 +1088,6 @@
         transform: rotate(5deg);
       }
 
-      /* Hero Content Column */
       .hero-content-column {
         max-width: 100%;
         width: 100%;
@@ -1099,7 +1097,6 @@
         flex-direction: column;
       }
 
-      /* Centered Hindi Motto */
       .motto-eyebrow {
         margin-bottom: 0.35rem;
         justify-content: center;
@@ -1116,7 +1113,6 @@
         text-align: center;
       }
 
-      /* Centered Headline */
       .hero-title {
         font-size: 1.82rem;
         line-height: 1.18;
@@ -1235,11 +1231,6 @@
   </style>
 </head>
 <body>
-  <!-- =========================================================================
-       Decorative Corner Background Flourishes
-       ========================================================================= -->
-
-  <!-- Desktop Corner Flourishes (>= 769px) -->
   <div class="flourish-desktop-wrapper" aria-hidden="true">
     <div class="bg-flourish bg-flourish-left">
       <svg viewBox="0 0 380 240" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
@@ -1266,7 +1257,6 @@
     </div>
   </div>
 
-  <!-- Mobile Corner Flourishes (<= 768px) -->
   <div class="flourish-mobile-wrapper" aria-hidden="true">
     <div class="bg-flourish bg-flourish-left-mobile">
       <svg viewBox="0 0 220 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1303,12 +1293,6 @@
 
       <!-- Header Navigation Controls -->
       <nav class="header-nav" aria-label="Main Navigation">
-        <!-- Mobile "Already have an account? Sign In ->" item -->
-        <div class="mobile-auth-prompt" id="mobileAuthPrompt">
-          <span class="prompt-text">Already have an account?</span>
-          <button type="button" class="sign-in-btn" id="mobileSignInBtn">Sign In <span class="arrow" aria-hidden="true">→</span></button>
-        </div>
-
         <!-- Desktop Navigation Items -->
         <div class="desktop-nav-items">
           <!-- Language Selector Dropdown -->
@@ -1592,6 +1576,10 @@
           formMessage.textContent = '';
           formMessage.className = 'form-message';
         }
+
+        if (val) {
+          localStorage.setItem('bodhsetu_login_contact', val);
+        }
       });
 
       clearInputBtn.addEventListener('click', () => {
@@ -1600,6 +1588,7 @@
         contactInput.focus();
         inputWrapper.classList.remove('error');
         formMessage.textContent = '';
+        localStorage.removeItem('bodhsetu_login_contact');
       });
 
       function validateContact(input) {
@@ -1626,10 +1615,11 @@
         return { valid: false, message: 'Please enter a valid email address or 10-digit mobile number.' };
       }
 
-      // 3. Form Submission Handling
+      // 3. Form Submission Handling — Pass email/phone to login.html
       authForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const result = validateContact(contactInput.value);
+        const rawValue = contactInput.value.trim();
+        const result = validateContact(rawValue);
 
         if (!result.valid) {
           inputWrapper.classList.add('error');
@@ -1641,6 +1631,9 @@
 
         inputWrapper.classList.remove('error');
         formMessage.className = 'form-message success-text';
+        formMessage.textContent = 'Continuing to Sign In...';
+
+        localStorage.setItem('bodhsetu_login_contact', rawValue);
         
         const originalText = submitBtn.querySelector('.btn-text').textContent;
         submitBtn.disabled = true;
@@ -1648,15 +1641,8 @@
         submitBtn.querySelector('.btn-text').textContent = 'Connecting...';
 
         setTimeout(() => {
-          submitBtn.disabled = false;
-          submitBtn.style.opacity = '1';
-          submitBtn.querySelector('.btn-text').textContent = originalText;
-
-          const identifier = result.type === 'phone' ? `+91 ${result.formatted}` : result.formatted;
-          showToast(`Verification code sent to ${identifier}!`, 'success');
-          
-          formMessage.textContent = `A verification code has been dispatched to ${identifier}.`;
-        }, 850);
+          window.location.href = `login.html?contact=${encodeURIComponent(rawValue)}`;
+        }, 300);
       });
 
       // 4. Language Selector Dropdown
@@ -1740,8 +1726,24 @@
       closeAboutModalBtn.addEventListener('click', () => closeModal(aboutModal));
       modalDismissBtn.addEventListener('click', () => closeModal(aboutModal));
 
-      mobileSignInBtn.addEventListener('click', () => openModal(signInModal));
-      closeSignInModalBtn.addEventListener('click', () => closeModal(signInModal));
+      function navigateToLogin(e) {
+        if (e) e.preventDefault();
+        const typedVal = contactInput.value.trim();
+        if (typedVal) {
+          localStorage.setItem('bodhsetu_login_contact', typedVal);
+          window.location.href = `login.html?contact=${encodeURIComponent(typedVal)}`;
+        } else {
+          window.location.href = 'login.html';
+        }
+      }
+
+      if (mobileSignInBtn) {
+        mobileSignInBtn.addEventListener('click', navigateToLogin);
+      }
+      const desktopSignInBtn = document.getElementById('desktopSignInBtn');
+      if (desktopSignInBtn) {
+        desktopSignInBtn.addEventListener('click', navigateToLogin);
+      }
 
       [aboutModal, signInModal].forEach(modal => {
         modal.addEventListener('click', (e) => {
