@@ -8,40 +8,52 @@
   
   <link rel="icon" type="image/png" href="Project_gallery/BodhSetu.png">
 
-  <!-- Google Fonts: Playfair Display for brand serif, Noto Serif Devanagari for Hindi motto, Plus Jakarta Sans for UI -->
+  <!-- Google Fonts: Playfair Display for editorial serif, Noto Serif Devanagari for Hindi slogan, Plus Jakarta Sans for UI -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     /* ==========================================================================
-       BodhSetu — Sign In System
-       Strictly faithful to Reference Image 1 (Desktop) & Reference Image 2 (Mobile)
-       Self-contained Vanilla CSS & Vanilla JS.
+       BodhSetu — Master Login System
+       Faithful to the attached art-directed design specification
+       Color tokens, balanced two-column composition, editorial serif typography,
+       and authentic cultural accents.
        ========================================================================== */
 
     :root {
-      --color-orange: #F5921E;
-      --color-orange-glow: rgba(245, 146, 30, 0.4);
-      --color-orange-light: #FFA83B;
-      --color-orange-dark: #D97706;
-      --color-bg-dark: #090E0C;
-      --color-card-bg: rgba(13, 19, 16, 0.82);
-      --color-card-border: rgba(255, 255, 255, 0.16);
-      --color-text-white: #FFFFFF;
-      --color-text-warm: #F3EFEA;
-      --color-text-muted: #94A3B8;
-      --color-input-bg: rgba(255, 255, 255, 0.05);
-      --color-input-border: rgba(255, 255, 255, 0.2);
+      /* BodhSetu Primary Design Tokens */
+      --color-forest-deep: #101A14;
+      --color-forest-surface: #142019;
+      --color-forest-surface-card: rgba(20, 32, 25, 0.90);
+      --color-saffron: #F59A1B;
+      --color-saffron-light: #FFA83B;
+      --color-saffron-dark: #E87A08;
+      --color-saffron-glow: rgba(245, 154, 27, 0.32);
+      --color-warm-ivory: #F5F0E5;
+      --color-text-secondary: #B9C1B9;
+      --color-text-muted: #8E988E;
+      --color-border-gold: rgba(225, 190, 112, 0.38);
+      --color-border-input: rgba(185, 193, 185, 0.22);
+      --color-input-bg: rgba(16, 26, 20, 0.58);
 
-      --font-brand: 'Playfair Display', Georgia, serif;
+      --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
       --font-hindi: 'Noto Serif Devanagari', serif;
-      --font-ui: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 
-      --radius-panel: 24px;
+      --radius-card: 28px;
       --radius-input: 13px;
-      --radius-btn: 13px;
+      --radius-btn: 14px;
       --transition-smooth: 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="warm"] {
+      --color-forest-deep: #0D1611;
+      --color-forest-surface: #18281F;
+      --color-forest-surface-card: rgba(24, 40, 31, 0.94);
+      --color-warm-ivory: #FFFBF5;
+      --color-text-secondary: #C8D1C8;
+      --color-border-gold: rgba(245, 154, 27, 0.45);
     }
 
     *, *::before, *::after {
@@ -50,7 +62,7 @@
       padding: 0;
     }
 
-    /* Suppress default browser scrollbars completely across all platforms */
+    /* Suppress default browser scrollbars completely */
     html, body, * {
       scrollbar-width: none !important;
       -ms-overflow-style: none !important;
@@ -68,15 +80,15 @@
       font-size: 16px;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      background-color: var(--color-bg-dark);
+      background-color: var(--color-forest-deep);
       height: 100%;
       overflow-x: hidden;
     }
 
     body {
-      font-family: var(--font-ui);
-      background-color: var(--color-bg-dark);
-      color: var(--color-text-warm);
+      font-family: var(--font-sans);
+      background-color: var(--color-forest-deep);
+      color: var(--color-warm-ivory);
       min-height: 100vh;
       min-height: 100dvh;
       position: relative;
@@ -103,31 +115,69 @@
     }
 
     /* --------------------------------------------------------------------------
-       Cinematic Photographic Background & Responsive Lighting
+       Cinematic Background Layer & Lighting Scrims
        -------------------------------------------------------------------------- */
     .viewport-background {
       position: fixed;
       inset: 0;
       z-index: 0;
       pointer-events: none;
-      background-image: url('Project_gallery/Wallpaper_1_1.png');
+      overflow: hidden;
+      background-color: var(--color-forest-deep);
+    }
+
+    .bg-image-layer {
+      position: absolute;
+      inset: 0;
+      background-image: url('Project_gallery/Wallpaper_9.jpg');
       background-size: cover;
       background-repeat: no-repeat;
-      background-position: left center;
+      background-position: left 22%;
+      width: 100%;
+      height: 100%;
       transition: background-position 0.3s ease;
     }
 
-    /* Desktop gradient: Soft left over women, darkening towards right over foliage */
-    .viewport-background::after {
-      content: '';
+    /* Soft radial vignette over photo */
+    .bg-scrim-left {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle at 22% 35%,
+        transparent 38%,
+        rgba(16, 26, 20, 0.42) 78%,
+        rgba(16, 26, 20, 0.85) 100%
+      );
+    }
+
+    /* Deep forest gradient blending photo seamlessly into the right card column */
+    .bg-scrim-right {
       position: absolute;
       inset: 0;
       background: linear-gradient(
         to right,
-        rgba(9, 14, 12, 0.15) 0%,
-        rgba(9, 14, 12, 0.35) 42%,
-        rgba(7, 11, 9, 0.82) 65%,
-        rgba(6, 9, 8, 0.96) 100%
+        rgba(16, 26, 20, 0.04) 0%,
+        rgba(16, 26, 20, 0.18) 42%,
+        rgba(16, 26, 20, 0.65) 58%,
+        rgba(16, 26, 20, 0.90) 72%,
+        var(--color-forest-deep) 88%,
+        var(--color-forest-deep) 100%
+      );
+    }
+
+    /* Bottom grounding scrim for text legibility */
+    .bg-scrim-bottom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 48%;
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(16, 26, 20, 0.55) 45%,
+        rgba(16, 26, 20, 0.92) 85%,
+        var(--color-forest-deep) 100%
       );
     }
 
@@ -137,43 +187,56 @@
       z-index: 1;
       pointer-events: none;
       background: radial-gradient(
-        circle at 75% 50%,
-        rgba(245, 146, 30, 0.06) 0%,
-        transparent 65%
+        circle at 82% 45%,
+        rgba(245, 154, 27, 0.05) 0%,
+        transparent 60%
       );
     }
 
     /* --------------------------------------------------------------------------
-       Top Navigation Bar (Faithful to Reference 1 & 2: Logo + Brand + Tagline + About | ☼)
+       Page Layout: Full Viewport Container
+       -------------------------------------------------------------------------- */
+    .page-layout {
+      position: relative;
+      z-index: 5;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* --------------------------------------------------------------------------
+       Top Navigation Bar (Upper-Left Brand + Upper-Right Actions)
        -------------------------------------------------------------------------- */
     .site-top-bar {
-      position: absolute;
-      top: 1.8rem;
-      left: 2.5rem;
-      right: 2.5rem;
-      z-index: 15;
+      width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: clamp(1.2rem, 2.5vh, 2rem) clamp(1.8rem, 4.5vw, 4.8rem);
       box-sizing: border-box;
-      pointer-events: auto;
+      flex-shrink: 0;
+      z-index: 10;
     }
 
     .site-brand-header {
       display: inline-flex;
       align-items: center;
-      gap: 0.9rem;
-      transition: opacity var(--transition-smooth);
+      gap: 0.95rem;
+      text-decoration: none;
+      transition: opacity var(--transition-smooth), transform var(--transition-smooth);
     }
 
     .site-brand-header:hover {
-      opacity: 0.92;
+      opacity: 0.94;
+      transform: translateY(-1px);
     }
 
     .brand-logo-frame {
       width: 48px;
       height: 48px;
-      background: transparent;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -185,7 +248,7 @@
       height: 100%;
       object-fit: contain;
       display: block;
-      filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.7));
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.75));
     }
 
     .brand-text-group {
@@ -194,187 +257,210 @@
     }
 
     .brand-title {
-      font-family: var(--font-brand);
+      font-family: var(--font-serif);
       font-size: 1.6rem;
       font-weight: 700;
-      color: var(--color-text-white);
+      color: var(--color-warm-ivory);
       line-height: 1.15;
       letter-spacing: -0.01em;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
     }
 
     .brand-tagline {
-      font-family: var(--font-ui);
+      font-family: var(--font-sans);
       font-size: 0.82rem;
-      color: #D1D5DB;
+      color: var(--color-text-secondary);
       font-weight: 400;
       letter-spacing: 0.01em;
       margin-top: 0.15rem;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
     }
 
     .top-bar-actions {
       display: flex;
       align-items: center;
-      gap: 0.85rem;
-      color: #E2E8F0;
-      font-size: 0.92rem;
+      gap: 0.95rem;
+      color: var(--color-warm-ivory);
+      font-size: 0.95rem;
     }
 
     .nav-about-link {
       font-weight: 500;
-      color: #E2E8F0;
+      color: var(--color-warm-ivory);
       transition: color var(--transition-smooth);
-      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.7);
+      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
+      font-size: 0.92rem;
     }
 
     .nav-about-link:hover {
-      color: #FFA83B;
+      color: var(--color-saffron);
     }
 
     .nav-divider {
-      color: rgba(255, 255, 255, 0.35);
+      color: rgba(255, 255, 255, 0.3);
       user-select: none;
       font-weight: 300;
     }
 
     .nav-theme-btn {
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #E2E8F0;
+      color: var(--color-saffron);
       border-radius: 50%;
       transition: all var(--transition-smooth);
-      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.7);
+      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
     }
 
     .nav-theme-btn:hover {
-      color: #F5921E;
       background: rgba(255, 255, 255, 0.08);
-      transform: rotate(15deg);
+      transform: rotate(18deg) scale(1.08);
     }
 
     .nav-theme-btn svg {
-      width: 19px;
-      height: 19px;
+      width: 20px;
+      height: 20px;
       display: block;
     }
 
     /* --------------------------------------------------------------------------
-       Main Page Layout Container (Desktop: Right-aligned over foliage)
+       Main Content Grid: Two-Column Composition
+       Left: ~64% photographic area with hero headline in lower-left
+       Right: ~36% login card
        -------------------------------------------------------------------------- */
-    .page-container {
-      position: relative;
-      z-index: 5;
-      min-height: 100vh;
-      min-height: 100dvh;
-      width: 100%;
-      display: flex;
-      justify-content: flex-end;
+    .main-content-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) clamp(430px, 36vw, 490px);
+      gap: clamp(1.5rem, 3.5vw, 4.5rem);
+      padding: 0 clamp(1.8rem, 4.5vw, 4.8rem) clamp(2rem, 4vh, 3.2rem) clamp(1.8rem, 4.5vw, 4.8rem);
       align-items: center;
-      padding: 2.5rem clamp(2.5rem, 6.5vw, 6.8rem) 2.5rem 2.5rem;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    /* --------------------------------------------------------------------------
+       Hero Section (Lower-Left Photographic Area)
+       -------------------------------------------------------------------------- */
+    .hero-left-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      height: 100%;
+      padding-bottom: clamp(1.5rem, 4.5vh, 4rem);
       box-sizing: border-box;
     }
 
-    /* --------------------------------------------------------------------------
-       Decorative Botanical Leaf Corner Ornaments & Bottom Curve Lines
-       Faithful to both Reference Images 1 & 2
-       -------------------------------------------------------------------------- */
-    .card-corner-leaf {
-      position: absolute;
+    .hero-text-container {
+      max-width: 540px;
+    }
+
+    .hero-headline {
+      font-family: var(--font-serif);
+      font-size: clamp(2.35rem, 3.4vw, 3.75rem);
+      line-height: 1.14;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      display: flex;
+      flex-direction: column;
+      text-shadow: 0 4px 18px rgba(0, 0, 0, 0.85);
+    }
+
+    .hero-line-1 {
+      color: var(--color-warm-ivory);
+    }
+
+    .hero-line-2 {
+      color: var(--color-saffron);
+      text-shadow: 0 0 25px rgba(245, 154, 27, 0.4), 0 3px 12px rgba(0, 0, 0, 0.85);
+    }
+
+    .hero-accent-bar {
       width: 38px;
-      height: 38px;
-      pointer-events: none;
-      z-index: 2;
-      filter: drop-shadow(0 0 8px rgba(245, 146, 30, 0.35));
+      height: 3px;
+      background: var(--color-saffron);
+      border-radius: 2px;
+      margin: 1.15rem 0 0.95rem 0;
+      box-shadow: 0 0 10px rgba(245, 154, 27, 0.5);
     }
 
-    .card-corner-leaf.top-left {
-      top: 12px;
-      left: 12px;
-    }
-
-    .card-corner-leaf.bottom-right {
-      bottom: 12px;
-      right: 12px;
-    }
-
-    .card-corner-leaf svg {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    .card-bottom-accent {
-      position: absolute;
-      bottom: 8px;
-      left: 18px;
-      right: 18px;
-      height: 14px;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .card-bottom-accent svg {
-      width: 100%;
-      height: 100%;
-      display: block;
+    .hero-supporting-copy {
+      font-family: var(--font-sans);
+      font-size: clamp(0.96rem, 1.15vw, 1.08rem);
+      color: var(--color-text-secondary);
+      line-height: 1.55;
+      font-weight: 400;
+      max-width: 440px;
+      letter-spacing: 0.01em;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
     }
 
     /* --------------------------------------------------------------------------
-       Login Panel (Premium Glassmorphic Rectangular Card)
+       Login Card Section (Right Column)
        -------------------------------------------------------------------------- */
-    .login-panel {
+    .login-card-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       width: 100%;
-      max-width: 430px;
-      background: var(--color-card-bg);
-      border: 1px solid var(--color-card-border);
-      border-top: 1px solid rgba(255, 255, 255, 0.26);
-      border-radius: var(--radius-panel);
-      padding: 2.25rem 2.25rem 2.15rem 2.25rem;
+    }
+
+    .login-card {
+      width: 100%;
+      background: var(--color-forest-surface-card);
+      border: 1px solid var(--color-border-gold);
+      border-radius: var(--radius-card);
+      padding: clamp(2rem, 3.2vh, 2.4rem) clamp(1.8rem, 2.8vw, 2.35rem);
       box-shadow:
-        0 28px 65px -12px rgba(0, 0, 0, 0.85),
-        0 10px 30px rgba(0, 0, 0, 0.55),
-        inset 0 1px 1px 0 rgba(255, 255, 255, 0.22),
-        inset 0 -1px 1px 0 rgba(0, 0, 0, 0.4);
+        0 30px 70px -15px rgba(0, 0, 0, 0.88),
+        0 12px 32px rgba(0, 0, 0, 0.65),
+        inset 0 1px 0 rgba(225, 190, 112, 0.32);
       backdrop-filter: blur(28px) saturate(135%);
       -webkit-backdrop-filter: blur(28px) saturate(135%);
       display: flex;
       flex-direction: column;
       position: relative;
       overflow: hidden;
+      box-sizing: border-box;
+      transition: border-color var(--transition-smooth), box-shadow var(--transition-smooth);
     }
 
-    /* Subtle ambient saffron backlight aura in upper card corner */
-    .login-panel::before {
-      content: '';
+    /* Bottom-Right Corner Botanical Leaf Flourish (Faithful to Demo Pic) */
+    .card-corner-botanical {
       position: absolute;
-      top: -40px;
-      right: -30px;
-      width: 220px;
-      height: 220px;
-      background: radial-gradient(circle, rgba(245, 146, 30, 0.12) 0%, transparent 70%);
+      bottom: 0;
+      right: 0;
+      width: 82px;
+      height: 82px;
       pointer-events: none;
-      z-index: 0;
+      z-index: 1;
+      opacity: 0.75;
     }
 
-    /* Inside-card brand section (Desktop view) */
-    .panel-brand-header {
+    .card-corner-botanical svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* --------------------------------------------------------------------------
+       Card Header: Emblem, Title & Tagline
+       -------------------------------------------------------------------------- */
+    .card-brand-header {
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      margin-bottom: 0.15rem;
+      margin-bottom: 0.4rem;
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
 
-    .panel-logo-frame {
+    .card-logo-frame {
       width: 58px;
       height: 58px;
-      background: transparent;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -382,139 +468,128 @@
       position: relative;
     }
 
-    .panel-logo-frame::after {
+    .card-logo-frame::after {
       content: '';
       position: absolute;
-      inset: -6px;
-      background: radial-gradient(circle, rgba(245, 146, 30, 0.22) 0%, transparent 70%);
+      inset: -5px;
+      background: radial-gradient(circle, rgba(245, 154, 27, 0.2) 0%, transparent 70%);
       border-radius: 50%;
       z-index: 0;
       pointer-events: none;
     }
 
-    .panel-logo-img {
+    .card-logo-img {
       width: 100%;
       height: 100%;
       object-fit: contain;
       display: block;
       position: relative;
       z-index: 1;
-      filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.7));
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.7));
       transition: transform 0.28s ease;
     }
 
-    .login-panel:hover .panel-logo-img {
+    .login-card:hover .card-logo-img {
       transform: scale(1.04);
     }
 
-    .panel-brand-title {
-      font-family: var(--font-brand);
-      font-size: 1.48rem;
+    .card-brand-title {
+      font-family: var(--font-serif);
+      font-size: 1.55rem;
       font-weight: 700;
-      color: var(--color-text-white);
+      color: var(--color-warm-ivory);
       line-height: 1.15;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.65);
+      letter-spacing: -0.01em;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
     }
 
-    .panel-brand-tagline {
-      font-size: 0.78rem;
-      color: #CBD5E1;
-      margin-top: 0.15rem;
+    .card-brand-tagline {
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      color: var(--color-text-secondary);
+      margin-top: 0.2rem;
       letter-spacing: 0.015em;
     }
 
     /* --------------------------------------------------------------------------
-       Decorative Leaf Dividers: — 🍂 —
+       Delicate Lotus Ornamental Separator
        -------------------------------------------------------------------------- */
-    .leaf-divider {
+    .card-ornament-divider {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 0.85rem;
       width: 100%;
-      max-width: 210px;
-      margin: 0.9rem auto;
+      max-width: 220px;
+      margin: 0.75rem auto 0.85rem auto;
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
 
-    .leaf-divider .divider-line {
+    .card-ornament-divider.footer-divider {
+      margin: 1.15rem auto 0.95rem auto;
+      max-width: 190px;
+    }
+
+    .ornament-line {
       flex: 1;
       height: 1px;
       background: linear-gradient(
         90deg,
         transparent 0%,
-        rgba(245, 146, 30, 0.45) 50%,
-        rgba(245, 146, 30, 0.85) 100%
+        rgba(225, 190, 112, 0.35) 50%,
+        rgba(225, 190, 112, 0.75) 100%
       );
     }
 
-    .leaf-divider .divider-line.right {
+    .ornament-line.right {
       background: linear-gradient(
         90deg,
-        rgba(245, 146, 30, 0.85) 0%,
-        rgba(245, 146, 30, 0.45) 50%,
+        rgba(225, 190, 112, 0.75) 0%,
+        rgba(225, 190, 112, 0.35) 50%,
         transparent 100%
       );
     }
 
-    .leaf-divider .leaf-symbol {
-      width: 17px;
-      height: 17px;
+    .lotus-motif {
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      filter: drop-shadow(0 0 6px rgba(245, 146, 30, 0.65));
+      filter: drop-shadow(0 0 5px rgba(245, 154, 27, 0.45));
     }
 
-    .leaf-divider .leaf-symbol svg {
-      width: 100%;
-      height: 100%;
+    .lotus-motif svg {
       display: block;
     }
 
     /* --------------------------------------------------------------------------
-       Main Login Heading & Subtitle
+       Hindi Slogan: नियम से बोध तक।
        -------------------------------------------------------------------------- */
-    .heading-group {
+    .card-slogan-group {
       text-align: center;
       margin-bottom: 1.4rem;
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
 
-    .hindi-heading {
+    .hindi-slogan {
       font-family: var(--font-hindi);
-      font-size: 1.78rem;
+      font-size: 1.62rem;
       font-weight: 700;
-      color: var(--color-text-white);
-      line-height: 1.3;
+      color: var(--color-warm-ivory);
+      line-height: 1.25;
       letter-spacing: 0.02em;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.75);
     }
 
-    .hindi-heading .highlight-orange {
-      color: #F89B29;
-      text-shadow: 0 0 18px rgba(248, 155, 41, 0.55), 0 2px 6px rgba(0, 0, 0, 0.8);
-    }
-
-    .login-subtitle {
-      font-size: 0.9rem;
-      color: #E2E8F0;
-      margin-top: 0.3rem;
-      font-weight: 400;
-      letter-spacing: 0.01em;
-      opacity: 0.95;
-    }
-
-    /* Mobile external heading block that sits outside the card */
-    .mobile-external-heading {
-      display: none;
+    .hindi-slogan .highlight-saffron {
+      color: var(--color-saffron);
+      text-shadow: 0 0 18px rgba(245, 154, 27, 0.6), 0 2px 6px rgba(0, 0, 0, 0.85);
     }
 
     /* --------------------------------------------------------------------------
-       Interactive Login Form
+       Interactive Form Controls
        -------------------------------------------------------------------------- */
     .login-form {
       display: flex;
@@ -522,7 +597,22 @@
       gap: 1.05rem;
       width: 100%;
       position: relative;
-      z-index: 1;
+      z-index: 2;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .form-field-label {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.015em;
+      cursor: pointer;
     }
 
     .field-wrapper {
@@ -534,8 +624,8 @@
 
     .field-icon {
       position: absolute;
-      left: 1.1rem;
-      color: rgba(255, 255, 255, 0.92);
+      left: 1.05rem;
+      color: var(--color-text-secondary);
       pointer-events: none;
       display: flex;
       align-items: center;
@@ -551,16 +641,16 @@
 
     .form-input {
       width: 100%;
-      height: 50px;
+      height: 52px;
       background: var(--color-input-bg);
-      border: 1px solid var(--color-input-border);
+      border: 1px solid var(--color-border-input);
       border-radius: var(--radius-input);
-      color: var(--color-text-white);
-      font-size: 0.95rem;
+      color: var(--color-warm-ivory);
+      font-size: 0.94rem;
       padding: 0 1rem 0 3.1rem;
       outline: none;
-      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-      backdrop-filter: blur(6px);
+      transition: all var(--transition-smooth);
+      backdrop-filter: blur(8px);
     }
 
     .form-input.has-toggle {
@@ -568,24 +658,35 @@
     }
 
     .form-input::placeholder {
-      color: #8C9BA8;
+      color: #6F7B71;
       font-weight: 400;
     }
 
     .form-input:hover {
-      border-color: rgba(255, 255, 255, 0.32);
-      background: rgba(255, 255, 255, 0.075);
+      border-color: rgba(225, 190, 112, 0.4);
+      background: rgba(16, 26, 20, 0.72);
     }
 
     .form-input:focus {
-      border-color: var(--color-orange);
-      background: rgba(255, 255, 255, 0.085);
-      box-shadow: 0 0 0 3.5px var(--color-orange-glow), 0 6px 18px rgba(0, 0, 0, 0.35);
+      border-color: var(--color-saffron);
+      background: rgba(16, 26, 20, 0.82);
+      box-shadow: 0 0 0 3.5px var(--color-saffron-glow), 0 6px 18px rgba(0, 0, 0, 0.4);
     }
 
     .field-wrapper.error .form-input {
       border-color: #EF4444;
       box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25);
+    }
+
+    .field-error-message {
+      font-size: 0.76rem;
+      color: #F87171;
+      margin-top: 0.35rem;
+      display: none;
+    }
+
+    .field-wrapper.error + .field-error-message {
+      display: block;
     }
 
     /* Password visibility toggle button */
@@ -597,20 +698,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--color-text-muted);
+      color: var(--color-text-secondary);
       border-radius: 8px;
-      transition: color var(--transition-smooth), background-color var(--transition-smooth);
-      z-index: 2;
+      transition: all var(--transition-smooth);
+      z-index: 3;
     }
 
     .password-toggle-btn:hover {
-      color: var(--color-text-white);
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    .password-toggle-btn:focus-visible {
-      outline: 2px solid var(--color-orange);
-      outline-offset: 2px;
+      color: var(--color-saffron);
+      background: rgba(255, 255, 255, 0.06);
     }
 
     .password-toggle-btn svg {
@@ -619,38 +715,23 @@
       display: block;
     }
 
-    /* Validation inline error feedback */
-    .field-error-message {
-      font-size: 0.76rem;
-      color: #F87171;
-      margin-top: 0.25rem;
-      padding-left: 0.4rem;
-      display: none;
-    }
-
-    .field-wrapper.error + .field-error-message {
-      display: block;
-    }
-
     /* --------------------------------------------------------------------------
-       Remember Me & Forgot Password Row (Faithful visual presentation, non-functional)
+       Remember Me Checkbox & Forgot Password Row
        -------------------------------------------------------------------------- */
     .form-options-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      width: 100%;
-      margin: 0.1rem 0 0.35rem 0;
-      font-size: 0.88rem;
+      margin: 0.2rem 0 0.3rem 0;
+      font-size: 0.84rem;
     }
 
     .remember-me-container {
       display: inline-flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.55rem;
       cursor: pointer;
       user-select: none;
-      color: var(--color-text-white);
     }
 
     .checkbox-native {
@@ -664,9 +745,9 @@
     .checkbox-custom {
       width: 17px;
       height: 17px;
-      border: 1.5px solid rgba(255, 255, 255, 0.4);
-      border-radius: 4px;
-      background: rgba(255, 255, 255, 0.05);
+      border: 1.5px solid rgba(185, 193, 185, 0.4);
+      border-radius: 5px;
+      background: rgba(16, 26, 20, 0.6);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -674,131 +755,137 @@
       flex-shrink: 0;
     }
 
-    .remember-me-container:hover .checkbox-custom {
-      border-color: var(--color-text-white);
-      background: rgba(255, 255, 255, 0.1);
+    .checkbox-check-icon {
+      width: 11px;
+      height: 9px;
+      display: none;
     }
 
     .checkbox-native:checked + .checkbox-custom {
-      background: var(--color-orange);
-      border-color: var(--color-orange);
-    }
-
-    .checkbox-check-icon {
-      width: 11px;
-      height: 11px;
-      stroke: #111827;
-      stroke-width: 2.4;
-      display: none;
+      background: var(--color-saffron);
+      border-color: var(--color-saffron);
+      box-shadow: 0 0 10px rgba(245, 154, 27, 0.45);
     }
 
     .checkbox-native:checked + .checkbox-custom .checkbox-check-icon {
       display: block;
     }
 
-    .remember-label-text {
-      font-size: 0.86rem;
-      color: var(--color-text-white);
-      font-weight: 400;
+    .checkbox-native:focus-visible + .checkbox-custom {
+      outline: 2px solid var(--color-saffron);
+      outline-offset: 2px;
     }
 
-    .forgot-password-link {
-      color: #F89B29;
-      font-weight: 500;
-      font-size: 0.86rem;
-      cursor: default;
-      user-select: none;
+    .remember-label-text {
+      color: var(--color-text-secondary);
+      font-size: 0.82rem;
+      font-weight: 400;
       transition: color var(--transition-smooth);
     }
 
+    .remember-me-container:hover .remember-label-text {
+      color: var(--color-warm-ivory);
+    }
+
+    .forgot-password-link {
+      color: var(--color-saffron);
+      font-size: 0.82rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all var(--transition-smooth);
+      letter-spacing: 0.01em;
+    }
+
     .forgot-password-link:hover {
-      color: #FFB347;
+      color: var(--color-saffron-light);
+      text-decoration: underline;
     }
 
     /* --------------------------------------------------------------------------
-       Sign In Submit Button
+       Primary Sign In Submit Button
        -------------------------------------------------------------------------- */
     .submit-button {
       width: 100%;
-      height: 50px;
-      background: linear-gradient(180deg, #F99E25 0%, #E97D11 100%);
-      color: #0E1412;
+      height: 54px;
+      background: linear-gradient(135deg, #F59A1B 0%, #E87A08 100%);
+      color: #101A14;
       font-weight: 700;
       font-size: 1.02rem;
       letter-spacing: 0.015em;
       border-radius: var(--radius-btn);
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.6rem;
+      gap: 0.65rem;
+      margin-top: 0.35rem;
       box-shadow:
-        0 6px 20px rgba(233, 125, 17, 0.42),
-        inset 0 1px 1px rgba(255, 255, 255, 0.4);
-      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-      margin-top: 0.25rem;
+        0 8px 24px -4px rgba(245, 154, 27, 0.42),
+        0 2px 6px rgba(0, 0, 0, 0.4);
+      transition: all var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
     }
 
     .submit-button:hover {
-      background: linear-gradient(180deg, #FFA733 0%, #F38712 100%);
+      background: linear-gradient(135deg, #FFA83B 0%, #F59A1B 100%);
+      transform: translateY(-2px);
       box-shadow:
-        0 8px 26px rgba(233, 125, 17, 0.58),
-        inset 0 1px 1px rgba(255, 255, 255, 0.5);
-      transform: translateY(-1.5px);
+        0 12px 30px -4px rgba(245, 154, 27, 0.55),
+        0 4px 10px rgba(0, 0, 0, 0.5);
     }
 
     .submit-button:active {
       transform: translateY(0);
-      background: #D97706;
-      box-shadow: 0 3px 10px rgba(233, 125, 17, 0.35);
+      box-shadow: 0 4px 12px rgba(245, 154, 27, 0.3);
     }
 
     .submit-button:focus-visible {
       outline: 3px solid #FFFFFF;
-      outline-offset: 2px;
+      outline-offset: 3px;
     }
 
-    .submit-button .btn-arrow {
-      font-size: 1.15rem;
-      line-height: 1;
+    .btn-arrow {
+      font-size: 1.25rem;
       transition: transform var(--transition-smooth);
     }
 
     .submit-button:hover .btn-arrow {
-      transform: translateX(3px);
-    }
-
-    .submit-button:disabled {
-      opacity: 0.7;
-      cursor: not-allowed;
-      transform: none;
+      transform: translateX(4px);
     }
 
     /* --------------------------------------------------------------------------
-       Sign-Up Footer Section
+       Sign Up Footer Section
        -------------------------------------------------------------------------- */
     .signup-footer {
       text-align: center;
       font-size: 0.88rem;
-      color: #E2E8F0;
-      margin-top: 0.15rem;
+      color: var(--color-text-secondary);
       position: relative;
-      z-index: 1;
+      z-index: 2;
     }
 
     .signup-link {
-      color: #F89B29;
+      color: var(--color-saffron);
       font-weight: 600;
-      transition: color var(--transition-smooth);
+      margin-left: 0.35rem;
       display: inline-flex;
       align-items: center;
-      gap: 0.2rem;
-      margin-left: 0.25rem;
-      text-shadow: 0 0 12px rgba(248, 155, 41, 0.35);
+      gap: 0.25rem;
+      transition: all var(--transition-smooth);
     }
 
     .signup-link:hover {
-      color: #FFB347;
+      color: var(--color-saffron-light);
       text-decoration: underline;
+    }
+
+    .signup-link:hover span {
+      transform: translateX(3px);
+    }
+
+    .signup-link span {
+      display: inline-block;
+      transition: transform var(--transition-smooth);
     }
 
     /* --------------------------------------------------------------------------
@@ -817,18 +904,18 @@
 
     .toast-item {
       pointer-events: auto;
-      background: rgba(18, 25, 22, 0.95);
-      border: 1px solid rgba(245, 146, 30, 0.4);
-      color: var(--color-text-white);
-      padding: 0.75rem 1.25rem;
-      border-radius: 12px;
+      background: rgba(18, 28, 22, 0.96);
+      border: 1px solid var(--color-border-gold);
+      color: var(--color-warm-ivory);
+      padding: 0.8rem 1.3rem;
+      border-radius: 13px;
       font-size: 0.88rem;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
       display: flex;
       align-items: center;
-      gap: 0.65rem;
+      gap: 0.7rem;
       animation: toastIn 0.25s ease-out forwards;
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(14px);
     }
 
     .toast-item.toast-success {
@@ -851,57 +938,55 @@
     }
 
     /* --------------------------------------------------------------------------
-       Mobile & Tablet Responsive System (Faithful to Reference Image 2)
-       Strict vertical hierarchy fitting 100dvh with ZERO scrolling required
+       Responsive Breakpoints: Laptops, Tablets, and Mobile
        -------------------------------------------------------------------------- */
-    @media (max-width: 900px) {
-      html, body {
-        height: 100%;
-        height: 100dvh;
-        overflow: hidden;
+
+    /* Standard Laptops & Compact Desktops (1024px - 1366px) */
+    @media (max-width: 1366px) {
+      .main-content-grid {
+        grid-template-columns: minmax(0, 1fr) clamp(400px, 38vw, 460px);
+        gap: clamp(1.5rem, 3vw, 3rem);
       }
 
-      body {
-        min-height: 100vh;
-        min-height: 100dvh;
-        max-height: 100dvh;
+      .hero-headline {
+        font-size: clamp(2.1rem, 3vw, 3.1rem);
+      }
+    }
+
+    /* Tablet Landscape & Portrait (769px - 1023px) */
+    @media (max-width: 1023px) {
+      .main-content-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 0 clamp(1.5rem, 4vw, 3rem) 2.5rem clamp(1.5rem, 4vw, 3rem);
+      }
+
+      .hero-left-section {
+        padding-bottom: 0;
+        text-align: center;
+        align-items: center;
+      }
+
+      .hero-text-container {
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: space-between;
       }
 
-      /* Photographic positioning framing smiling women in upper center */
-      .viewport-background {
-        background-position: 25% 10%;
-        background-size: cover;
+      .hero-accent-bar {
+        margin: 0.85rem auto;
       }
 
-      /* Dramatic vertical scrim matching Reference Image 2 */
-      .viewport-background::after {
-        background: linear-gradient(
-          to bottom,
-          rgba(9, 14, 12, 0.2) 0%,
-          rgba(9, 14, 12, 0.05) 70px,
-          rgba(9, 14, 12, 0.22) 150px,
-          rgba(7, 11, 9, 0.72) 230px,
-          rgba(6, 9, 8, 0.94) 300px,
-          rgba(6, 9, 8, 0.99) 100%
-        );
-      }
-
-      /* Clean mobile top bar with brand on left and About | ☼ on right */
-      .site-top-bar {
-        position: relative;
-        top: auto;
-        left: auto;
-        right: auto;
-        width: 100%;
-        max-width: 420px;
+      .login-card {
+        max-width: 480px;
         margin: 0 auto;
-        padding: clamp(0.5rem, 1.6vh, 0.9rem) 1.25rem 0.15rem 1.25rem;
-        flex-shrink: 0;
-        z-index: 10;
+      }
+    }
+
+    /* Mobile Devices (<= 768px) */
+    @media (max-width: 768px) {
+      .site-top-bar {
+        padding: 0.9rem 1.15rem 0.4rem 1.15rem;
       }
 
       .brand-logo-frame {
@@ -915,133 +1000,93 @@
 
       .brand-tagline {
         font-size: 0.72rem;
-        color: #D1D5DB;
       }
 
-      .top-bar-actions {
-        font-size: 0.82rem;
-        gap: 0.65rem;
+      .main-content-grid {
+        grid-template-columns: 1fr;
+        padding: 0 1rem 1.8rem 1rem;
+        gap: clamp(0.9rem, 2vh, 1.35rem);
       }
 
-      .nav-theme-btn {
-        width: 28px;
-        height: 28px;
-      }
-
-      .nav-theme-btn svg {
-        width: 16px;
-        height: 16px;
-      }
-
-      /* Mobile Page Container flex layout */
-      .page-container {
-        flex: 1;
-        min-height: 0;
-        height: auto;
-        width: 100%;
-        max-width: 420px;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
+      .hero-left-section {
+        padding: 0.2rem 0 0 0;
         align-items: center;
-        padding: 0 1.15rem clamp(0.5rem, 1.8vh, 1.1rem) 1.15rem;
-        box-sizing: border-box;
-      }
-
-      /* Elastic photo stage revealing the women in yellow sarees */
-      .mobile-photo-stage {
-        flex: 1 1 0;
-        min-height: 35px;
-        max-height: 170px;
-        width: 100%;
-        pointer-events: none;
-      }
-
-      /* Hide inside-card brand section & top divider on mobile */
-      .panel-brand-header {
-        display: none;
-      }
-
-      .login-panel .leaf-divider.top-divider {
-        display: none;
-      }
-
-      .login-panel .heading-group {
-        display: none;
-      }
-
-      /* External heading placed cleanly above the card */
-      .mobile-external-heading {
-        display: block;
-        width: 100%;
-        max-width: 380px;
-        margin: 0 auto clamp(0.35rem, 1.2vh, 0.65rem) auto;
         text-align: center;
-        flex-shrink: 0;
       }
 
-      .mobile-external-heading .leaf-divider {
-        margin: 0 auto clamp(0.2rem, 0.6vh, 0.35rem) auto;
-        max-width: 160px;
+      .hero-headline {
+        font-size: clamp(1.55rem, 5.8vw, 2.1rem);
+        line-height: 1.18;
       }
 
-      .hindi-heading {
-        font-size: clamp(1.3rem, 2.4vh, 1.55rem);
-        line-height: 1.25;
-        font-weight: 700;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
-      }
-
-      .login-subtitle {
-        font-size: clamp(0.76rem, 1.3vh, 0.82rem);
-        margin-top: 0.15rem;
-        color: #E2E8F0;
-        opacity: 0.95;
-      }
-
-      /* Sleek, perfectly proportioned mobile login card */
-      .login-panel {
-        margin: 0 auto;
-        padding: clamp(0.95rem, 2vh, 1.25rem) clamp(1rem, 2.6vw, 1.25rem);
-        border-radius: 20px;
-        background: rgba(13, 19, 16, 0.86);
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        border-top: 1px solid rgba(255, 255, 255, 0.25);
-        box-shadow: 0 20px 48px rgba(0, 0, 0, 0.75), inset 0 1px 1px rgba(255, 255, 255, 0.2);
-        max-width: 380px;
-        width: 100%;
-        box-sizing: border-box;
-        flex-shrink: 0;
-      }
-
-      .card-corner-leaf {
+      .hero-accent-bar {
         width: 32px;
-        height: 32px;
+        height: 2.5px;
+        margin: 0.6rem auto 0.55rem auto;
       }
 
-      .card-corner-leaf.top-left {
-        top: 8px;
-        left: 8px;
+      .hero-supporting-copy {
+        font-size: 0.84rem;
+        max-width: 330px;
+        line-height: 1.45;
       }
 
-      .card-corner-leaf.bottom-right {
-        bottom: 8px;
-        right: 8px;
+      .login-card {
+        padding: 1.45rem 1.25rem 1.35rem 1.25rem;
+        border-radius: 22px;
+        max-width: 420px;
       }
 
-      .card-bottom-accent {
-        bottom: 5px;
-        left: 14px;
-        right: 14px;
-        height: 10px;
+      .card-logo-frame {
+        width: 46px;
+        height: 46px;
+        margin-bottom: 0.3rem;
+      }
+
+      .card-brand-title {
+        font-size: 1.35rem;
+      }
+
+      .card-brand-tagline {
+        font-size: 0.76rem;
+      }
+
+      .card-ornament-divider {
+        margin: 0.55rem auto 0.65rem auto;
+      }
+
+      .card-ornament-divider.footer-divider {
+        margin: 0.85rem auto 0.7rem auto;
+      }
+
+      .card-slogan-group {
+        margin-bottom: 1.05rem;
+      }
+
+      .hindi-slogan {
+        font-size: 1.38rem;
       }
 
       .login-form {
-        gap: clamp(0.55rem, 1.1vh, 0.75rem);
+        gap: 0.85rem;
+      }
+
+      .form-field-label {
+        margin-bottom: 0.3rem;
+        font-size: 0.79rem;
+      }
+
+      .form-input, .submit-button {
+        height: 46px;
+      }
+
+      .form-input {
+        font-size: 0.88rem;
+        padding-left: 2.85rem;
       }
 
       .field-icon {
-        left: 0.85rem;
+        left: 0.9rem;
       }
 
       .field-icon svg {
@@ -1049,361 +1094,265 @@
         height: 16px;
       }
 
-      .form-input {
-        height: clamp(40px, 5.2vh, 44px);
-        font-size: 0.88rem;
-        padding: 0 0.85rem 0 2.75rem;
-        border-radius: 11px;
-      }
-
-      .form-input.has-toggle {
-        padding-right: 2.75rem;
-      }
-
-      .password-toggle-btn {
-        right: 0.6rem;
-        width: 28px;
-        height: 28px;
-      }
-
-      .password-toggle-btn svg {
-        width: 16px;
-        height: 16px;
+      .submit-button {
+        font-size: 0.95rem;
+        margin-top: 0.2rem;
       }
 
       .form-options-row {
         font-size: 0.8rem;
-        margin: 0.05rem 0 0.15rem 0;
-      }
-
-      .remember-me-container {
-        gap: 0.45rem;
-      }
-
-      .checkbox-custom {
-        width: 15px;
-        height: 15px;
+        margin: 0.1rem 0 0.15rem 0;
       }
 
       .remember-label-text, .forgot-password-link {
-        font-size: 0.78rem;
-      }
-
-      .submit-button {
-        height: clamp(40px, 5.2vh, 44px);
-        font-size: 0.94rem;
-        border-radius: 11px;
-        margin-top: 0.1rem;
-      }
-
-      .login-panel .leaf-divider.bottom-divider {
-        margin: clamp(0.45rem, 1vh, 0.65rem) auto clamp(0.35rem, 0.8vh, 0.5rem) auto;
-        max-width: 155px;
+        font-size: 0.79rem;
       }
 
       .signup-footer {
-        font-size: 0.8rem;
-        margin-top: 0.05rem;
-      }
-
-      .toast-container {
-        left: 1rem;
-        right: 1rem;
-        bottom: 1rem;
+        font-size: 0.82rem;
       }
     }
 
-    /* Fallback safety for exceptionally short viewports (< 540px) */
-    @media (max-height: 540px) and (max-width: 900px) {
-      html, body {
-        overflow-y: auto !important;
-      }
-      .page-container {
-        justify-content: flex-start;
-      }
-      .mobile-photo-stage {
-        display: none;
-      }
-    }
-
-    /* Short Desktop / Laptop screen optimization */
-    @media (max-height: 740px) and (min-width: 901px) {
-      .page-container {
-        padding-top: 1.25rem;
-        padding-bottom: 1.25rem;
+    /* Small Mobile (<= 380px) */
+    @media (max-width: 380px) {
+      .login-card {
+        padding: 1.5rem 1.1rem;
       }
 
-      .login-panel {
-        padding: 1.65rem 1.85rem 1.45rem 1.85rem;
-        max-width: 410px;
-      }
-
-      .panel-logo-frame {
-        width: 48px;
-        height: 48px;
-        margin-bottom: 0.35rem;
-      }
-
-      .panel-brand-title {
-        font-size: 1.35rem;
-      }
-
-      .leaf-divider {
-        margin: 0.65rem auto;
-      }
-
-      .heading-group {
-        margin-bottom: 1.05rem;
-      }
-
-      .hindi-heading {
-        font-size: 1.55rem;
-      }
-
-      .login-form {
-        gap: 0.85rem;
-      }
-
-      .form-input, .submit-button {
-        height: 46px;
+      .form-options-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.65rem;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Fullscreen Cinematic Photographic Background -->
-  <div class="viewport-background" aria-hidden="true"></div>
+  <!-- Cinematic Background Layer with Seamless Scrim Blending -->
+  <div class="viewport-background" aria-hidden="true">
+    <div class="bg-image-layer"></div>
+    <div class="bg-scrim-left"></div>
+    <div class="bg-scrim-right"></div>
+    <div class="bg-scrim-bottom"></div>
+  </div>
+
+  <!-- Ambient Glow -->
   <div class="ambient-glow" aria-hidden="true"></div>
 
-  <!-- Primary Top Brand Bar (Desktop & Mobile - Faithful to Reference Images) -->
-  <header class="site-top-bar" id="siteTopBar">
-    <a href="index.html" class="site-brand-header" id="brandHomeLink" aria-label="BodhSetu Home">
-      <div class="brand-logo-frame">
-        <img src="Project_gallery/BodhSetu.png" alt="BodhSetu Emblem" class="brand-logo-img">
-      </div>
-      <div class="brand-text-group">
-        <span class="brand-title">BodhSetu</span>
-        <span class="brand-tagline">Public services, made understandable</span>
-      </div>
-    </a>
-    <div class="top-bar-actions">
-      <a href="index.html#about" class="nav-about-link">About</a>
-      <span class="nav-divider" aria-hidden="true">|</span>
-      <button type="button" class="nav-theme-btn" aria-label="Theme" title="Theme">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="4"></circle>
-          <path d="M12 2v2"></path>
-          <path d="M12 20v2"></path>
-          <path d="M4.93 4.93l1.41 1.41"></path>
-          <path d="M17.66 17.66l1.41 1.41"></path>
-          <path d="M2 12h2"></path>
-          <path d="M20 12h2"></path>
-          <path d="M6.34 17.66l-1.41 1.41"></path>
-          <path d="M19.07 4.93l-1.41 1.41"></path>
-        </svg>
-      </button>
-    </div>
-  </header>
+  <!-- Fullscreen Page Container -->
+  <div class="page-layout">
 
-  <!-- Main Viewport Content Area -->
-  <main class="page-container" id="mainContainer">
+    <!-- Primary Top Brand Bar -->
+    <header class="site-top-bar" id="siteTopBar">
+      <a href="index.html" class="site-brand-header" id="brandHomeLink" aria-label="BodhSetu Home">
+        <div class="brand-logo-frame">
+          <img src="Project_gallery/BodhSetu.png" alt="BodhSetu Emblem" class="brand-logo-img">
+        </div>
+        <div class="brand-text-group">
+          <span class="brand-title">BodhSetu</span>
+          <span class="brand-tagline">Public services, made understandable</span>
+        </div>
+      </a>
 
-    <!-- Mobile-only photo showcase spacer for responsive composition -->
-    <div class="mobile-photo-stage" aria-hidden="true"></div>
-
-    <!-- Mobile-only External Heading & Divider (Faithful to Reference Image 2) -->
-    <div class="mobile-external-heading" id="mobileHeadingBlock">
-      <!-- Decorative Leaf Divider: — 🍂 — -->
-      <div class="leaf-divider" aria-hidden="true">
-        <span class="divider-line"></span>
-        <div class="leaf-symbol">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 20C4 20 5.5 14 11 9C16.5 4 21 3 21 3C21 3 20 7.5 15 13C10 18.5 4 20 4 20Z" fill="#F5921E"/>
-            <path d="M4 20C8 16 13 11 21 3" stroke="#FFA733" stroke-width="1.2" stroke-linecap="round"/>
+      <div class="top-bar-actions">
+        <a href="index.html#about" class="nav-about-link">About</a>
+        <span class="nav-divider" aria-hidden="true">|</span>
+        <button type="button" class="nav-theme-btn" id="themeToggleBtn" aria-label="Toggle theme" title="Toggle theme">
+          <svg class="sun-icon" id="sunIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2"></path>
+            <path d="M12 20v2"></path>
+            <path d="M4.93 4.93l1.41 1.41"></path>
+            <path d="M17.66 17.66l1.41 1.41"></path>
+            <path d="M2 12h2"></path>
+            <path d="M20 12h2"></path>
+            <path d="M6.34 17.66l-1.41 1.41"></path>
+            <path d="M19.07 4.93l-1.41 1.41"></path>
           </svg>
-        </div>
-        <span class="divider-line right"></span>
-      </div>
-
-      <h1 class="hindi-heading">
-        नियम से <span class="highlight-orange">बोध</span> तक।
-      </h1>
-      <p class="login-subtitle">Sign in to continue your journey</p>
-    </div>
-
-    <!-- Main Login Panel Container -->
-    <section class="login-panel" aria-label="Sign In Panel">
-
-      <!-- Corner Leaf Flourish (Top-Left) -->
-      <div class="card-corner-leaf top-left" aria-hidden="true">
-        <svg viewBox="0 0 36 36" fill="none">
-          <path d="M4 6C12 7 18 14 20 22C20 22 22 12 16 6C12 2 4 6 4 6Z" fill="#F5921E"/>
-          <path d="M10 16C15 18 18 24 18 28C18 28 21 21 18 16C15 11 10 16 10 16Z" fill="#FFA83B" opacity="0.85"/>
-          <path d="M3 14C8 14 13 17 15 22C15 22 15 15 10 12C7 10 3 14 3 14Z" fill="#D97706" opacity="0.9"/>
-        </svg>
-      </div>
-
-      <!-- Corner Leaf Flourish (Bottom-Right) -->
-      <div class="card-corner-leaf bottom-right" aria-hidden="true">
-        <svg viewBox="0 0 36 36" fill="none">
-          <path d="M32 30C24 29 18 22 16 14C16 14 14 24 20 30C24 34 32 30 32 30Z" fill="#F5921E"/>
-          <path d="M26 20C21 18 18 12 18 8C18 8 15 15 18 20C21 25 26 20 26 20Z" fill="#FFA83B" opacity="0.85"/>
-          <path d="M33 22C28 22 23 19 21 14C21 14 21 21 26 24C29 26 33 22 33 22Z" fill="#D97706" opacity="0.9"/>
-        </svg>
-      </div>
-
-      <!-- Bottom Inner Filigree Accent -->
-      <div class="card-bottom-accent" aria-hidden="true">
-        <svg viewBox="0 0 320 20" preserveAspectRatio="none">
-          <path d="M2 14 Q 80 2, 160 10 T 318 4" stroke="rgba(245, 146, 30, 0.45)" stroke-width="1.2" fill="none"/>
-          <path d="M2 17 Q 100 6, 160 14 T 318 10" stroke="rgba(245, 146, 30, 0.25)" stroke-width="1" fill="none"/>
-        </svg>
-      </div>
-
-      <!-- Desktop Card Header (Faithful to Reference Image 1 - No white circle) -->
-      <div class="panel-brand-header" aria-hidden="true">
-        <div class="panel-logo-frame">
-          <img src="Project_gallery/BodhSetu.png" alt="BodhSetu Emblem" class="panel-logo-img">
-        </div>
-        <div class="panel-brand-title">BodhSetu</div>
-        <div class="panel-brand-tagline">Public services, made understandable</div>
-      </div>
-
-      <!-- Desktop Top Leaf Divider: — 🍂 — -->
-      <div class="leaf-divider top-divider" aria-hidden="true">
-        <span class="divider-line"></span>
-        <div class="leaf-symbol">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 20C4 20 5.5 14 11 9C16.5 4 21 3 21 3C21 3 20 7.5 15 13C10 18.5 4 20 4 20Z" fill="#F5921E"/>
-            <path d="M4 20C8 16 13 11 21 3" stroke="#FFA733" stroke-width="1.2" stroke-linecap="round"/>
+          <svg class="moon-icon" id="moonIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
           </svg>
-        </div>
-        <span class="divider-line right"></span>
-      </div>
-
-      <!-- Desktop Heading Group Inside Panel -->
-      <div class="heading-group">
-        <h1 class="hindi-heading">
-          नियम से <span class="highlight-orange">बोध</span> तक।
-        </h1>
-        <p class="login-subtitle">Sign in to continue your journey</p>
-      </div>
-
-      <!-- Interactive Sign In Form -->
-      <form class="login-form" id="loginForm" novalidate>
-
-        <!-- Email or Mobile Number Input Field -->
-        <div>
-          <div class="field-wrapper" id="contactFieldWrapper">
-            <!-- White Envelope Icon -->
-            <span class="field-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                <path d="M22 6L12 13L2 6"></path>
-              </svg>
-            </span>
-            <input
-              type="text"
-              id="contactInput"
-              name="contact"
-              class="form-input"
-              placeholder="Email or Mobile Number"
-              autocomplete="username"
-              aria-label="Email or Mobile Number"
-              required
-            >
-          </div>
-          <div class="field-error-message" id="contactError">Please enter a valid email address or 10-digit mobile number.</div>
-        </div>
-
-        <!-- Password Input Field -->
-        <div>
-          <div class="field-wrapper" id="passwordFieldWrapper">
-            <!-- White Lock Icon -->
-            <span class="field-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-              </svg>
-            </span>
-            <input
-              type="password"
-              id="passwordInput"
-              name="password"
-              class="form-input has-toggle"
-              placeholder="Password"
-              autocomplete="current-password"
-              aria-label="Password"
-              required
-            >
-            <!-- Password Show/Hide Toggle Button -->
-            <button
-              type="button"
-              class="password-toggle-btn"
-              id="togglePasswordBtn"
-              aria-label="Show password"
-              title="Show password"
-            >
-              <!-- Eye Off (Hidden state) Icon -->
-              <svg id="eyeOffIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                <line x1="1" y1="1" x2="23" y2="23"></line>
-              </svg>
-              <!-- Eye (Visible state) Icon -->
-              <svg id="eyeOnIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-            </button>
-          </div>
-          <div class="field-error-message" id="passwordError">Please enter your password (minimum 6 characters).</div>
-        </div>
-
-        <!-- Remember Me Checkbox & Forgot Password Row (Non-functional) -->
-        <div class="form-options-row">
-          <label class="remember-me-container" for="rememberMeCheckbox">
-            <input type="checkbox" id="rememberMeCheckbox" class="checkbox-native">
-            <span class="checkbox-custom" aria-hidden="true">
-              <svg class="checkbox-check-icon" viewBox="0 0 12 10" fill="none">
-                <path d="M1.5 5L4.5 8L10.5 2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </span>
-            <span class="remember-label-text">Remember me</span>
-          </label>
-
-          <span class="forgot-password-link">Forgot Password?</span>
-        </div>
-
-        <!-- Sign In Submit Button -->
-        <button type="submit" class="submit-button" id="signInSubmitBtn">
-          <span class="btn-text">Sign In</span>
-          <span class="btn-arrow" aria-hidden="true">→</span>
         </button>
+      </div>
+    </header>
 
-      </form>
+    <!-- Main Viewport Content: Two-Column Composition -->
+    <main class="main-content-grid" id="mainContainer">
 
-      <!-- Bottom Leaf Divider: — 🍂 — -->
-      <div class="leaf-divider bottom-divider" aria-hidden="true">
-        <span class="divider-line"></span>
-        <div class="leaf-symbol">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 20C4 20 5.5 14 11 9C16.5 4 21 3 21 3C21 3 20 7.5 15 13C10 18.5 4 20 4 20Z" fill="#F5921E"/>
-            <path d="M4 20C8 16 13 11 21 3" stroke="#FFA733" stroke-width="1.2" stroke-linecap="round"/>
-          </svg>
+      <!-- Left Hero Section: Rural Photography with Editorial Headline -->
+      <section class="hero-left-section" aria-label="Mission Introduction">
+        <div class="hero-text-container">
+          <h1 class="hero-headline">
+            <span class="hero-line-1">Understand the rules.</span>
+            <span class="hero-line-2">Access your rights.</span>
+          </h1>
+          <div class="hero-accent-bar" aria-hidden="true"></div>
+          <p class="hero-supporting-copy">
+            Get simple, clear guidance on government services, schemes and your entitlements.
+          </p>
         </div>
-        <span class="divider-line right"></span>
-      </div>
+      </section>
 
-      <!-- Sign Up Prompt Footer -->
-      <div class="signup-footer">
-        <span>Don’t have an account?</span>
-        <a href="index.html" class="signup-link" id="signUpLink">Sign Up <span aria-hidden="true">→</span></a>
-      </div>
+      <!-- Right Column: Premium Dark Forest Login Card -->
+      <section class="login-card-section" aria-label="Sign In Area">
+        <div class="login-card" id="loginCard">
 
-    </section>
+          <!-- Bottom-Right Botanical Corner Motif (Faithful to Demo Pic) -->
+          <div class="card-corner-botanical" aria-hidden="true">
+            <svg viewBox="0 0 80 80" width="80" height="80" fill="none">
+              <path d="M74 74 C50 72 32 58 26 36 C24 28 25 18 28 10" stroke="rgba(225, 190, 112, 0.32)" stroke-width="1.3" stroke-linecap="round"/>
+              <path d="M38 48 C46 44 54 48 58 56 C52 58 44 56 38 48 Z" fill="rgba(225, 190, 112, 0.22)" stroke="rgba(225, 190, 112, 0.35)" stroke-width="0.8"/>
+              <path d="M48 62 C56 60 64 64 68 70 C60 72 52 70 48 62 Z" fill="rgba(225, 190, 112, 0.2)" stroke="rgba(225, 190, 112, 0.3)" stroke-width="0.8"/>
+              <path d="M28 32 C34 26 42 28 46 34 C40 38 32 36 28 32 Z" fill="rgba(225, 190, 112, 0.22)" stroke="rgba(225, 190, 112, 0.35)" stroke-width="0.8"/>
+              <path d="M26 18 C30 12 37 12 40 17 C35 21 29 20 26 18 Z" fill="rgba(225, 190, 112, 0.18)" stroke="rgba(225, 190, 112, 0.28)" stroke-width="0.8"/>
+            </svg>
+          </div>
 
-  </main>
+          <!-- Card Header: Center-aligned Emblem & Brand Name -->
+          <div class="card-brand-header">
+            <div class="card-logo-frame">
+              <img src="Project_gallery/BodhSetu.png" alt="BodhSetu Emblem" class="card-logo-img">
+            </div>
+            <h2 class="card-brand-title">BodhSetu</h2>
+            <p class="card-brand-tagline">Public services, made understandable</p>
+          </div>
+
+          <!-- Subtle Lotus Ornamental Divider -->
+          <div class="card-ornament-divider" aria-hidden="true">
+            <span class="ornament-line"></span>
+            <span class="lotus-motif">
+              <svg viewBox="0 0 24 16" width="22" height="15" fill="none">
+                <path d="M12 2C12 2 9 8 7 11C5 14 3 14 3 14C3 14 6 14.5 9 13.5C10.5 13 12 11.5 12 11.5C12 11.5 13.5 13 15 13.5C18 14.5 21 14 21 14C21 14 19 14 17 11C15 8 12 2 12 2Z" fill="#E1BE70" opacity="0.9"/>
+                <path d="M12 5C12 5 10.5 9 9.5 11C8.5 13 7.5 13 7.5 13C7.5 13 9 13.2 10.5 12.5C11.2 12.2 12 11.5 12 11.5C12 11.5 12.8 12.2 13.5 12.5C15 13.2 16.5 13 16.5 13C16.5 13 15.5 13 14.5 11C13.5 9 12 5 12 5Z" fill="#F59A1B"/>
+                <circle cx="12" cy="14" r="1" fill="#E1BE70"/>
+              </svg>
+            </span>
+            <span class="ornament-line right"></span>
+          </div>
+
+          <!-- Hindi Slogan: नियम से बोध तक। -->
+          <div class="card-slogan-group">
+            <h3 class="hindi-slogan">
+              नियम से <span class="highlight-saffron">बोध</span> तक।
+            </h3>
+          </div>
+
+          <!-- Interactive Login Form -->
+          <form class="login-form" id="loginForm" novalidate>
+
+            <!-- Email Address Input Field with Persistent Label -->
+            <div class="form-group">
+              <label for="contactInput" class="form-field-label">Email Address</label>
+              <div class="field-wrapper" id="contactFieldWrapper">
+                <span class="field-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                    <path d="M22 6L12 13L2 6"></path>
+                  </svg>
+                </span>
+                <input
+                  type="text"
+                  id="contactInput"
+                  name="contact"
+                  class="form-input"
+                  placeholder="abc@gmail.com"
+                  autocomplete="username"
+                  aria-label="Email Address"
+                  required
+                >
+              </div>
+              <div class="field-error-message" id="contactError">Please enter a valid email address or 10-digit mobile number.</div>
+            </div>
+
+            <!-- Password Input Field with Persistent Label -->
+            <div class="form-group">
+              <label for="passwordInput" class="form-field-label">Password</label>
+              <div class="field-wrapper" id="passwordFieldWrapper">
+                <span class="field-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                </span>
+                <input
+                  type="password"
+                  id="passwordInput"
+                  name="password"
+                  class="form-input has-toggle"
+                  placeholder="Password"
+                  autocomplete="current-password"
+                  aria-label="Password"
+                  required
+                >
+                <button
+                  type="button"
+                  class="password-toggle-btn"
+                  id="togglePasswordBtn"
+                  aria-label="Show password"
+                  title="Show password"
+                >
+                  <svg id="eyeOffIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                  </svg>
+                  <svg id="eyeOnIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+              </div>
+              <div class="field-error-message" id="passwordError">Please enter your password (minimum 6 characters).</div>
+            </div>
+
+            <!-- Remember Me & Forgot Password Row -->
+            <div class="form-options-row">
+              <label class="remember-me-container" for="rememberMeCheckbox">
+                <input type="checkbox" id="rememberMeCheckbox" class="checkbox-native" checked>
+                <span class="checkbox-custom" aria-hidden="true">
+                  <svg class="checkbox-check-icon" viewBox="0 0 12 10" fill="none">
+                    <path d="M1.5 5L4.5 8L10.5 2" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span class="remember-label-text">Remember me</span>
+              </label>
+
+              <a href="#" class="forgot-password-link" id="forgotPasswordLink">Forgot Password?</a>
+            </div>
+
+            <!-- Primary Sign In Submit Button -->
+            <button type="submit" class="submit-button" id="signInSubmitBtn">
+              <span class="btn-text">Sign In</span>
+              <span class="btn-arrow" aria-hidden="true">→</span>
+            </button>
+
+          </form>
+
+          <!-- Bottom Lotus Divider -->
+          <div class="card-ornament-divider footer-divider" aria-hidden="true">
+            <span class="ornament-line"></span>
+            <span class="lotus-motif">
+              <svg viewBox="0 0 24 16" width="22" height="15" fill="none">
+                <path d="M12 2C12 2 9 8 7 11C5 14 3 14 3 14C3 14 6 14.5 9 13.5C10.5 13 12 11.5 12 11.5C12 11.5 13.5 13 15 13.5C18 14.5 21 14 21 14C21 14 19 14 17 11C15 8 12 2 12 2Z" fill="#E1BE70" opacity="0.9"/>
+                <path d="M12 5C12 5 10.5 9 9.5 11C8.5 13 7.5 13 7.5 13C7.5 13 9 13.2 10.5 12.5C11.2 12.2 12 11.5 12 11.5C12 11.5 12.8 12.2 13.5 12.5C15 13.2 16.5 13 16.5 13C16.5 13 15.5 13 14.5 11C13.5 9 12 5 12 5Z" fill="#F59A1B"/>
+                <circle cx="12" cy="14" r="1" fill="#E1BE70"/>
+              </svg>
+            </span>
+            <span class="ornament-line right"></span>
+          </div>
+
+          <!-- Sign Up Footer -->
+          <div class="signup-footer">
+            <span>Don’t have an account?</span>
+            <a href="index.html" class="signup-link" id="signUpLink">Sign Up <span aria-hidden="true">→</span></a>
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+
+  </div>
 
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toastContainer" aria-live="polite"></div>
@@ -1420,10 +1369,15 @@
       const togglePasswordBtn = document.getElementById('togglePasswordBtn');
       const eyeOffIcon = document.getElementById('eyeOffIcon');
       const eyeOnIcon = document.getElementById('eyeOnIcon');
+      const rememberMeCheckbox = document.getElementById('rememberMeCheckbox');
+      const forgotPasswordLink = document.getElementById('forgotPasswordLink');
       const signInSubmitBtn = document.getElementById('signInSubmitBtn');
       const toastContainer = document.getElementById('toastContainer');
+      const themeToggleBtn = document.getElementById('themeToggleBtn');
+      const sunIcon = document.getElementById('sunIcon');
+      const moonIcon = document.getElementById('moonIcon');
 
-      // 2. Pre-fill Contact from index.html (URL param or localStorage)
+      // 2. Pre-fill Contact from URL parameter or localStorage
       const urlParams = new URLSearchParams(window.location.search);
       const passedContact = urlParams.get('contact') || urlParams.get('email') || localStorage.getItem('bodhsetu_login_contact') || '';
 
@@ -1433,7 +1387,14 @@
           passwordInput.focus();
         }, 120);
       } else {
-        contactInput.focus();
+        // Default demo prefill or autofocus
+        contactInput.value = 'abc@gmail.com';
+      }
+
+      // Check remember me state
+      const savedRemember = localStorage.getItem('bodhsetu_remember_me');
+      if (savedRemember !== null) {
+        rememberMeCheckbox.checked = (savedRemember === 'true');
       }
 
       // 3. Password Visibility Toggle
@@ -1463,7 +1424,7 @@
         passwordWrapper.classList.remove('error');
       });
 
-      // Contact Validation Function
+      // Contact Validation Function (Email or 10-digit Phone)
       function isValidContact(val) {
         const clean = val.trim();
         if (!clean) return false;
@@ -1504,6 +1465,15 @@
           return;
         }
 
+        // Save remember state
+        if (rememberMeCheckbox.checked) {
+          localStorage.setItem('bodhsetu_remember_me', 'true');
+          localStorage.setItem('bodhsetu_login_contact', contactVal);
+        } else {
+          localStorage.setItem('bodhsetu_remember_me', 'false');
+          localStorage.removeItem('bodhsetu_login_contact');
+        }
+
         // Simulated Authentication Handlers
         const originalText = signInSubmitBtn.querySelector('.btn-text').textContent;
         signInSubmitBtn.disabled = true;
@@ -1517,7 +1487,44 @@
         }, 850);
       });
 
-      // 6. Toast Notification Helper
+      // 6. Forgot Password Click
+      forgotPasswordLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        const contactVal = contactInput.value.trim();
+        if (contactVal && isValidContact(contactVal)) {
+          showToast(`Password reset link sent to ${contactVal}`, 'info');
+        } else {
+          showToast('Please enter your email or mobile above, then click Forgot Password.', 'info');
+          contactInput.focus();
+        }
+      });
+
+      // 7. Theme Toggle Feature
+      const currentTheme = localStorage.getItem('bodhsetu_theme') || 'forest';
+      if (currentTheme === 'warm') {
+        document.documentElement.setAttribute('data-theme', 'warm');
+        sunIcon.style.display = 'none';
+        moonIcon.style.display = 'block';
+      }
+
+      themeToggleBtn.addEventListener('click', () => {
+        const isWarm = document.documentElement.getAttribute('data-theme') === 'warm';
+        if (isWarm) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('bodhsetu_theme', 'forest');
+          sunIcon.style.display = 'block';
+          moonIcon.style.display = 'none';
+          showToast('Deep Forest theme enabled', 'info');
+        } else {
+          document.documentElement.setAttribute('data-theme', 'warm');
+          localStorage.setItem('bodhsetu_theme', 'warm');
+          sunIcon.style.display = 'none';
+          moonIcon.style.display = 'block';
+          showToast('Warm Emerald theme enabled', 'info');
+        }
+      });
+
+      // 8. Toast Notification Helper
       function showToast(message, type = 'info') {
         const toast = document.createElement('div');
         toast.className = `toast-item toast-${type}`;
@@ -1526,7 +1533,7 @@
         if (type === 'success') {
           iconSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
         } else {
-          iconSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F5921E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>';
+          iconSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F59A1B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>';
         }
 
         toast.innerHTML = `${iconSvg}<span>${message}</span>`;
