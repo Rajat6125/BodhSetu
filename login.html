@@ -1241,9 +1241,9 @@
           <!-- Interactive Login Form -->
           <form class="login-form" id="loginForm" novalidate>
 
-            <!-- Email Address Input Field with Persistent Label -->
+            <!-- Email or Mobile Number Input Field with Persistent Label -->
             <div class="form-group">
-              <label for="contactInput" class="form-field-label">Email Address</label>
+              <label for="contactInput" class="form-field-label">Email or Mobile Number</label>
               <div class="field-wrapper" id="contactFieldWrapper">
                 <span class="field-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1256,9 +1256,9 @@
                   id="contactInput"
                   name="contact"
                   class="form-input"
-                  placeholder="abc@gmail.com"
+                  placeholder="Enter email or 10-digit mobile"
                   autocomplete="username"
-                  aria-label="Email Address"
+                  aria-label="Email or Mobile Number"
                   required
                 >
               </div>
@@ -1344,7 +1344,7 @@
           <!-- Sign Up Footer -->
           <div class="signup-footer">
             <span>Don’t have an account?</span>
-            <a href="index.html" class="signup-link" id="signUpLink">Sign Up <span aria-hidden="true">→</span></a>
+            <a href="register.html" class="signup-link" id="signUpLink">Sign Up <span aria-hidden="true">→</span></a>
           </div>
 
         </div>
@@ -1377,9 +1377,10 @@
       const sunIcon = document.getElementById('sunIcon');
       const moonIcon = document.getElementById('moonIcon');
 
-      // 2. Pre-fill Contact from URL parameter or localStorage
+      // 2. Pre-fill Contact from URL parameter or sessionStorage/localStorage
       const urlParams = new URLSearchParams(window.location.search);
-      const passedContact = urlParams.get('contact') || urlParams.get('email') || localStorage.getItem('bodhsetu_login_contact') || '';
+      const passedContact = urlParams.get('contact') || urlParams.get('email') || sessionStorage.getItem('bodhsetu_login_contact') || localStorage.getItem('bodhsetu_login_contact') || '';
+      const isJustRegistered = urlParams.get('registered') === 'true' || sessionStorage.getItem('bodhsetu_just_registered') === 'true';
 
       if (passedContact.trim()) {
         contactInput.value = passedContact.trim();
@@ -1389,6 +1390,13 @@
       } else {
         // Default demo prefill or autofocus
         contactInput.value = 'abc@gmail.com';
+      }
+
+      if (isJustRegistered) {
+        sessionStorage.removeItem('bodhsetu_just_registered');
+        setTimeout(() => {
+          showToast('Account registered successfully! Please sign in.', 'success');
+        }, 300);
       }
 
       // Check remember me state
