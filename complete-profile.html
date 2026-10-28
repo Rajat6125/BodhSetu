@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>BodhSetu — Complete Your Profile (Step 2 of 2)</title>
+  <meta name="description" content="Complete your profile to personalize government schemes and public services on BodhSetu.">
+  
+  <link rel="icon" type="image/png" href="Project_gallery/BodhSetu.png">
+
+  <!-- Google Fonts: Playfair Display for editorial serif, Noto Serif Devanagari for Hindi identity, Plus Jakarta Sans for UI -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       BodhSetu — Sign-Up Flow: Step 2 (Complete Your Profile)
+       Matches Page 1 (register.html) EXACTLY:
+       - Preserves the right-column card positioning
+       - Keeps left photographic area (woman, cows, blue wall) undisturbed
+       - Identical background scrims and ambient lighting
+       - Two-column compact layout inside the right card
+       - Seamless transition between steps with zero visual jump
+       ========================================================================== */
+
+    :root {
+      --color-primary-blue: #2563EB;
+      --color-primary-blue-hover: #1D4ED8;
+      --color-blue-gradient: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+      --color-blue-gradient-hover: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+      --color-deep-blue: #1E3A5F;
+      --color-light-blue: #EAF3FF;
+      --color-light-blue-subtle: #F0F6FF;
+      --color-white: #FFFFFF;
+      --color-soft-bg: #F7F9FC;
+      --color-text-primary: #344256;
+      --color-text-secondary: #6B778C;
+      --color-text-muted: #8E988E;
+      --color-saffron: #F59A1B;
+      --color-saffron-light: #FFA83B;
+      --color-success: #10B981;
+
+      /* Card & Input Styles */
+      --card-bg: rgba(255, 255, 255, 0.97);
+      --card-border: rgba(255, 255, 255, 0.85);
+      --card-shadow: 
+        0 20px 50px -10px rgba(13, 35, 58, 0.22),
+        0 8px 20px -6px rgba(0, 0, 0, 0.08);
+      --input-bg: #FFFFFF;
+      --input-border: #E2E8F0;
+      --input-border-hover: #CBD5E1;
+      --input-border-focus: #2563EB;
+      --input-focus-shadow: 0 0 0 3.5px rgba(37, 99, 235, 0.16);
+
+      /* Typography */
+      --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+      --font-hindi: 'Noto Serif Devanagari', serif;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+      --radius-card: 24px;
+      --radius-input: 11px;
+      --radius-btn: 12px;
+      --transition-smooth: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: var(--color-deep-blue);
+      height: 100%;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--color-deep-blue);
+      color: var(--color-text-primary);
+      min-height: 100vh;
+      min-height: 100dvh;
+      position: relative;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    input, select {
+      font-family: inherit;
+      font-size: inherit;
+    }
+
+    /* --------------------------------------------------------------------------
+       Cinematic Photographic Background Layer (Identical to Page 1)
+       Preserves the blue walls, woman, and cows without dimming or shifting
+       -------------------------------------------------------------------------- */
+    .viewport-background {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      background-color: var(--color-deep-blue);
+    }
+
+    .bg-image-layer {
+      position: absolute;
+      inset: 0;
+      background-image: url('Project_gallery/Wallpaper_2.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: left 24% center;
+      width: 100%;
+      height: 100%;
+      transition: background-position 0.4s ease;
+    }
+
+    .bg-scrim-left {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to right,
+        rgba(15, 30, 48, 0.60) 0%,
+        rgba(15, 30, 48, 0.32) 28%,
+        rgba(15, 30, 48, 0.10) 48%,
+        transparent 65%
+      );
+    }
+
+    .bg-scrim-bottom {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 38%;
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(15, 30, 48, 0.40) 45%,
+        rgba(15, 30, 48, 0.75) 100%
+      );
+    }
+
+    /* --------------------------------------------------------------------------
+       Page Layout: Full Viewport Container
+       -------------------------------------------------------------------------- */
+    .page-layout {
+      position: relative;
+      z-index: 5;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      box-sizing: border-box;
+      justify-content: space-between;
+    }
+
+    /* --------------------------------------------------------------------------
+       Top Navigation Bar (Identical to Page 1)
+       -------------------------------------------------------------------------- */
+    .site-top-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: clamp(0.9rem, 2vh, 1.4rem) clamp(1.8rem, 4.5vw, 4.5rem);
+      box-sizing: border-box;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    .site-brand-header {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.85rem;
+      text-decoration: none;
+      transition: opacity var(--transition-smooth), transform var(--transition-smooth);
+    }
+
+    .site-brand-header:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+
+    .brand-logo-frame {
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .brand-logo-frame::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      background: radial-gradient(circle, rgba(245, 154, 27, 0.3) 0%, transparent 70%);
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    .brand-logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.6));
+    }
+
+    .brand-text-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+
+    .brand-title {
+      font-family: var(--font-serif);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+    }
+
+    .brand-tagline {
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 400;
+      letter-spacing: 0.015em;
+      margin-top: 0.1rem;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+    }
+
+    .brand-hindi-motto {
+      font-family: var(--font-hindi);
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--color-saffron);
+      letter-spacing: 0.02em;
+      margin-top: 0.08rem;
+      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.85);
+    }
+
+    .brand-hindi-motto span {
+      color: #FFFFFF;
+    }
+
+    /* Top Bar Actions */
+    .top-bar-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.1rem;
+    }
+
+    .topbar-signin-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.88rem;
+      color: rgba(255, 255, 255, 0.92);
+      font-weight: 500;
+      text-shadow: 0 1px 5px rgba(0, 0, 0, 0.75);
+      transition: color var(--transition-smooth);
+    }
+
+    .topbar-signin-link .signin-accent {
+      color: #FFFFFF;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      background: rgba(255, 255, 255, 0.16);
+      backdrop-filter: blur(8px);
+      padding: 0.35rem 0.8rem;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      transition: all var(--transition-smooth);
+    }
+
+    .topbar-signin-link:hover .signin-accent {
+      background: var(--color-primary-blue);
+      border-color: var(--color-primary-blue);
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+      transform: translateY(-1px);
+    }
+
+    /* --------------------------------------------------------------------------
+       Main Content Grid: TWO-COLUMN COMPOSITION (Identical to Page 1)
+       Left: ~60% rural Rajasthan photographic area (undisturbed!)
+       Right: ~40% registration card area
+       -------------------------------------------------------------------------- */
+    .main-content-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) clamp(470px, 36vw, 530px);
+      gap: clamp(1.5rem, 3.5vw, 4.5rem);
+      padding: 0 clamp(1.8rem, 4.5vw, 4.5rem) clamp(1rem, 2.5vh, 2rem) clamp(1.8rem, 4.5vw, 4.5rem);
+      align-items: center;
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 0;
+    }
+
+    /* --------------------------------------------------------------------------
+       Hero Section (Left Photographic Side — Woman, Cows, Blue Wall)
+       -------------------------------------------------------------------------- */
+    .hero-left-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      height: 100%;
+      padding-bottom: clamp(1.5rem, 4vh, 3.5rem);
+      box-sizing: border-box;
+      pointer-events: none;
+    }
+
+    .hero-text-container {
+      max-width: 520px;
+      pointer-events: auto;
+    }
+
+    .hero-accent-bar {
+      width: 40px;
+      height: 3.5px;
+      background: var(--color-saffron);
+      border-radius: 2px;
+      margin-bottom: 0.95rem;
+      box-shadow: 0 0 14px rgba(245, 154, 27, 0.6);
+    }
+
+    .hero-headline {
+      font-family: var(--font-serif);
+      font-size: clamp(2.1rem, 3.1vw, 3.3rem);
+      line-height: 1.14;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      display: flex;
+      flex-direction: column;
+      text-shadow: 0 3px 14px rgba(0, 0, 0, 0.85);
+    }
+
+    .hero-line-1 {
+      color: #FFFFFF;
+    }
+
+    .hero-line-2 {
+      color: var(--color-saffron);
+      text-shadow: 0 0 24px rgba(245, 154, 27, 0.45), 0 3px 12px rgba(0, 0, 0, 0.85);
+    }
+
+    .hero-supporting-copy {
+      font-family: var(--font-sans);
+      font-size: clamp(0.92rem, 1.1vw, 1.02rem);
+      color: rgba(255, 255, 255, 0.88);
+      line-height: 1.55;
+      font-weight: 400;
+      max-width: 440px;
+      letter-spacing: 0.01em;
+      margin-top: 0.85rem;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
+    }
+
+    /* --------------------------------------------------------------------------
+       Right Column: Step 2 Profile Card (Sits on the RIGHT, exactly like Step 1)
+       -------------------------------------------------------------------------- */
+    .profile-card-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+    }
+
+    .profile-card {
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-card);
+      padding: clamp(1.2rem, 2vh, 1.55rem) clamp(1.35rem, 1.8vw, 1.75rem);
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(20px) saturate(120%);
+      -webkit-backdrop-filter: blur(20px) saturate(120%);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-sizing: border-box;
+      max-height: calc(100vh - 105px);
+      max-height: calc(100dvh - 105px);
+      overflow-y: auto;
+    }
+
+    /* Custom thin scrollbar for the right card if content overflows on small heights */
+    .profile-card::-webkit-scrollbar {
+      width: 5px;
+    }
+    .profile-card::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .profile-card::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 4px;
+    }
+
+    /* 2-Step Progress Indicator */
+    .step-indicator-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .step-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      user-select: none;
+    }
+
+    .step-item.completed {
+      color: var(--color-success);
+    }
+
+    .step-item.active {
+      color: var(--color-primary-blue);
+    }
+
+    .step-badge {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: #E2E8F0;
+      color: var(--color-text-secondary);
+    }
+
+    .step-item.completed .step-badge {
+      background: #E6FBF2;
+      color: var(--color-success);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+    }
+
+    .step-item.active .step-badge {
+      background: var(--color-primary-blue);
+      color: #FFFFFF;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.35);
+    }
+
+    .step-connector-line {
+      flex: 0 0 35px;
+      height: 1.5px;
+      background: #CBD5E1;
+      border-radius: 2px;
+    }
+
+    /* Card Header */
+    .card-header {
+      margin-bottom: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .card-title {
+      font-family: var(--font-serif);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--color-deep-blue);
+      line-height: 1.2;
+      letter-spacing: -0.015em;
+    }
+
+    .card-subtitle {
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      color: var(--color-text-secondary);
+      line-height: 1.42;
+      margin-top: 0.25rem;
+      font-weight: 400;
+    }
+
+    /* --------------------------------------------------------------------------
+       Profile Form & Structured Compact Sections
+       -------------------------------------------------------------------------- */
+    .profile-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      width: 100%;
+    }
+
+    .form-section {
+      background: #F8FAFD;
+      border: 1px solid #E8EEF7;
+      border-radius: 12px;
+      padding: 0.75rem 0.95rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .section-title {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--color-deep-blue);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      border-bottom: 1px solid #EDF2F7;
+      padding-bottom: 0.35rem;
+      margin-bottom: 0.1rem;
+    }
+
+    .section-title svg {
+      width: 14px;
+      height: 14px;
+      color: var(--color-primary-blue);
+    }
+
+    /* 2-Column Grid inside sections */
+    .two-col-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .form-field-label {
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin-bottom: 0.22rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .label-optional {
+      font-size: 0.7rem;
+      color: #94A3B8;
+      font-weight: 400;
+    }
+
+    .field-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .form-select,
+    .form-input {
+      width: 100%;
+      height: 38px;
+      background: var(--input-bg);
+      border: 1.5px solid var(--input-border);
+      border-radius: var(--radius-input);
+      color: var(--color-text-primary);
+      font-size: 0.85rem;
+      padding: 0 0.75rem;
+      outline: none;
+      transition: all var(--transition-smooth);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    }
+
+    .form-select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      cursor: pointer;
+      padding-right: 2rem;
+    }
+
+    .form-select option {
+      color: var(--color-text-primary);
+      background: #FFFFFF;
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+      border-color: var(--input-border-focus);
+      box-shadow: var(--input-focus-shadow);
+      background: #FFFFFF;
+    }
+
+    .form-input:hover,
+    .form-select:hover {
+      border-color: var(--input-border-hover);
+    }
+
+    .select-chevron {
+      position: absolute;
+      right: 0.75rem;
+      color: #94A3B8;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    .select-chevron svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    /* State Preserved Chip from Step 1 */
+    .state-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: #FFFFFF;
+      border: 1.5px solid #D5E4F7;
+      padding: 0 0.7rem;
+      border-radius: var(--radius-input);
+      font-size: 0.82rem;
+      color: var(--color-deep-blue);
+      font-weight: 600;
+      height: 38px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .state-chip svg {
+      width: 14px;
+      height: 14px;
+      color: var(--color-primary-blue);
+      flex-shrink: 0;
+    }
+
+    .step1-tag {
+      font-size: 0.68rem;
+      background: var(--color-light-blue);
+      color: var(--color-primary-blue);
+      padding: 0.1rem 0.35rem;
+      border-radius: 5px;
+      font-weight: 700;
+      margin-left: auto;
+    }
+
+    /* Residence Type Equal Width Pill Radios */
+    .pills-group {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      width: 100%;
+    }
+
+    .pill-item {
+      display: flex;
+      width: 100%;
+      min-width: 0;
+    }
+
+    .pill-radio-label {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 38px;
+      padding: 0 0.4rem;
+      background: #FFFFFF;
+      border: 1.5px solid var(--input-border);
+      border-radius: var(--radius-input);
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--color-text-primary);
+      cursor: pointer;
+      transition: all var(--transition-smooth);
+      user-select: none;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .pill-radio-input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .pill-radio-input:checked + .pill-radio-label {
+      background: var(--color-light-blue);
+      border-color: var(--color-primary-blue);
+      color: var(--color-primary-blue);
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.16);
+    }
+
+    /* --------------------------------------------------------------------------
+       Actions Row: Back & Complete Registration
+       -------------------------------------------------------------------------- */
+    .actions-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      margin-top: 0.65rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid #EDF2F7;
+      flex-shrink: 0;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      height: 44px;
+      padding: 0 1.1rem;
+      background: #FFFFFF;
+      border: 1.5px solid #CBD5E1;
+      border-radius: var(--radius-btn);
+      color: var(--color-text-primary);
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: all var(--transition-smooth);
+    }
+
+    .back-btn:hover {
+      background: #F8FAFC;
+      border-color: #94A3B8;
+      transform: translateX(-2px);
+    }
+
+    .complete-reg-btn {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      height: 44px;
+      background: var(--color-blue-gradient);
+      color: #FFFFFF;
+      font-size: 0.94rem;
+      font-weight: 600;
+      border-radius: var(--radius-btn);
+      box-shadow: 0 6px 18px -3px rgba(37, 99, 235, 0.4);
+      transition: all var(--transition-smooth);
+    }
+
+    .complete-reg-btn:hover {
+      background: var(--color-blue-gradient-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 22px -3px rgba(37, 99, 235, 0.5);
+    }
+
+    .update-later-note {
+      text-align: center;
+      font-size: 0.74rem;
+      color: var(--color-text-secondary);
+      margin-top: 0.4rem;
+      flex-shrink: 0;
+    }
+
+    /* --------------------------------------------------------------------------
+       Registration Completed Modal Dialog
+       -------------------------------------------------------------------------- */
+    .success-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 30, 48, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .success-modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .success-card {
+      background: #FFFFFF;
+      border-radius: 24px;
+      width: 100%;
+      max-width: 440px;
+      padding: 2rem 1.8rem;
+      text-align: center;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+      transform: scale(0.92);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .success-modal-backdrop.open .success-card {
+      transform: scale(1);
+    }
+
+    .success-check-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #ECFDF5;
+      border: 2px solid var(--color-success);
+      color: var(--color-success);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      animation: popIn 0.4s ease-out;
+    }
+
+    .success-check-icon svg {
+      width: 30px;
+      height: 30px;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.6); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .success-title {
+      font-family: var(--font-serif);
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--color-deep-blue);
+      line-height: 1.25;
+      margin-bottom: 0.45rem;
+    }
+
+    .success-desc {
+      font-size: 0.88rem;
+      color: var(--color-text-secondary);
+      line-height: 1.48;
+      margin-bottom: 1.15rem;
+    }
+
+    .success-user-pill {
+      background: var(--color-light-blue);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      padding: 0.5rem 0.95rem;
+      border-radius: 20px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--color-primary-blue);
+      margin-bottom: 1.35rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .proceed-login-btn {
+      width: 100%;
+      height: 46px;
+      background: var(--color-blue-gradient);
+      color: #FFFFFF;
+      font-weight: 600;
+      font-size: 0.96rem;
+      border-radius: var(--radius-btn);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
+      transition: all var(--transition-smooth);
+    }
+
+    .proceed-login-btn:hover {
+      background: var(--color-blue-gradient-hover);
+      transform: translateY(-1px);
+    }
+
+    /* --------------------------------------------------------------------------
+       Responsive Breakpoints: Matching Page 1
+       -------------------------------------------------------------------------- */
+    @media (max-width: 1200px) {
+      .main-content-grid {
+        grid-template-columns: minmax(0, 1fr) clamp(440px, 35vw, 490px);
+        gap: clamp(1.5rem, 3vw, 3rem);
+      }
+    }
+
+    @media (max-width: 992px) {
+      body {
+        height: auto;
+        min-height: 100vh;
+      }
+
+      .page-layout {
+        height: auto;
+        min-height: 100vh;
+      }
+
+      .main-content-grid {
+        grid-template-columns: 1fr;
+        gap: 1.8rem;
+        padding: 0 clamp(1.5rem, 4vw, 3rem) 2.5rem clamp(1.5rem, 4vw, 3rem);
+      }
+
+      .hero-left-section {
+        padding-bottom: 0;
+        text-align: center;
+        align-items: center;
+      }
+
+      .hero-text-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .hero-accent-bar {
+        margin: 0.75rem auto;
+      }
+
+      .profile-card {
+        max-width: 500px;
+        margin: 0 auto;
+        max-height: none;
+        overflow-y: visible;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .site-top-bar {
+        padding: 0.85rem 1rem 0.4rem 1rem;
+      }
+
+      .brand-logo-frame {
+        width: 36px;
+        height: 36px;
+      }
+
+      .brand-title {
+        font-size: 1.3rem;
+      }
+
+      .topbar-signin-link .topbar-signin-text {
+        display: none;
+      }
+
+      .main-content-grid {
+        padding: 0 1rem 2rem 1rem;
+        gap: 1.15rem;
+      }
+
+      .hero-headline {
+        font-size: clamp(1.55rem, 6vw, 2.05rem);
+      }
+
+      .hero-supporting-copy {
+        font-size: 0.84rem;
+        max-width: 320px;
+      }
+
+      .profile-card {
+        padding: 1.25rem 1rem;
+        border-radius: 20px;
+        max-width: 420px;
+        background: #FFFFFF;
+      }
+
+      .card-title {
+        font-size: 1.3rem;
+      }
+
+      .two-col-grid {
+        grid-template-columns: 1fr;
+        gap: 0.55rem;
+      }
+
+      .pills-group {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.35rem;
+      }
+
+      .pill-radio-label {
+        font-size: 0.72rem;
+        padding: 0 0.2rem;
+      }
+
+      .actions-row {
+        flex-direction: column-reverse;
+        gap: 0.65rem;
+      }
+
+      .back-btn,
+      .complete-reg-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cinematic Background Layer (Identical to Page 1) -->
+  <div class="viewport-background" aria-hidden="true">
+    <div class="bg-image-layer"></div>
+    <div class="bg-scrim-left"></div>
+    <div class="bg-scrim-bottom"></div>
+  </div>
+
+  <!-- Fullscreen Page Container -->
+  <div class="page-layout">
+
+    <!-- Top Brand Bar -->
+    <header class="site-top-bar" id="siteTopBar">
+      <a href="index.html" class="site-brand-header" id="brandHomeLink" aria-label="BodhSetu Home">
+        <div class="brand-logo-frame">
+          <img src="Project_gallery/BodhSetu.png" alt="BodhSetu Emblem" class="brand-logo-img">
+        </div>
+        <div class="brand-text-group">
+          <div class="brand-title-row">
+            <span class="brand-title">BodhSetu</span>
+          </div>
+          <span class="brand-tagline">Public services, made understandable</span>
+          <span class="brand-hindi-motto">नियम से <span>बोध</span> तक!</span>
+        </div>
+      </a>
+
+      <div class="top-bar-actions">
+        <a href="login.html" class="topbar-signin-link" id="topbarSignInLink" aria-label="Sign in to your account">
+          <span class="topbar-signin-text">Already have an account?</span>
+          <span class="signin-accent">Sign in <span class="arrow-icon" aria-hidden="true">→</span></span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Main Viewport Content: Two-Column Composition (Left: Photo & Headline, Right: Form Card) -->
+    <main class="main-content-grid" id="mainContainer">
+
+      <!-- Left Hero Section: Rural Rajasthan Photography with Editorial Headline (Undisturbed!) -->
+      <section class="hero-left-section" aria-label="Mission Introduction">
+        <div class="hero-text-container">
+          <div class="hero-accent-bar" aria-hidden="true"></div>
+          <h1 class="hero-headline">
+            <span class="hero-line-1">Understand the rules.</span>
+            <span class="hero-line-2">Access your rights.</span>
+          </h1>
+          <p class="hero-supporting-copy">
+            Get simple, clear guidance on government services, schemes and your entitlements.
+          </p>
+        </div>
+      </section>
+
+      <!-- Right Column: Step 2 Complete Profile Card (In the exact same right column as Step 1) -->
+      <section class="profile-card-section" aria-label="Profile Completion Area">
+        <div class="profile-card" id="profileCard">
+
+          <!-- 2-Step Progress Indicator -->
+          <div class="step-indicator-wrapper" aria-label="Registration Step 2 of 2">
+            <div class="step-item completed">
+              <span class="step-badge" aria-hidden="true">✓</span>
+              <span>Basic Details</span>
+            </div>
+            <div class="step-connector-line" aria-hidden="true"></div>
+            <div class="step-item active">
+              <span class="step-badge" aria-hidden="true">2</span>
+              <span>Complete Profile</span>
+            </div>
+          </div>
+
+          <!-- Card Header -->
+          <div class="card-header">
+            <h2 class="card-title">Complete Your Profile</h2>
+          </div>
+
+          <!-- Profile Form with Compact Structured Sections -->
+          <form class="profile-form" id="profileForm" novalidate>
+
+            <!-- A. Personal Information -->
+            <section class="form-section" aria-labelledby="secPersonal">
+              <span class="section-title" id="secPersonal">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                Personal Information
+              </span>
+
+              <div class="two-col-grid">
+                <!-- 1. Age group -->
+                <div class="form-group">
+                  <label for="ageGroupSelect" class="form-field-label">Age group</label>
+                  <div class="field-wrapper">
+                    <select id="ageGroupSelect" name="ageGroup" class="form-select">
+                      <option value="" disabled selected>Select age group</option>
+                      <option value="Under 18">Under 18</option>
+                      <option value="18–25">18–25</option>
+                      <option value="26–40">26–40</option>
+                      <option value="41–60">41–60</option>
+                      <option value="Above 60">Above 60</option>
+                      <option value="Prefer not to say">Prefer not to say</option>
+                    </select>
+                    <span class="select-chevron" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- 2. Preferred language -->
+                <div class="form-group">
+                  <label for="languageSelect" class="form-field-label">Preferred language</label>
+                  <div class="field-wrapper">
+                    <select id="languageSelect" name="preferredLanguage" class="form-select">
+                      <option value="" disabled selected>Select language</option>
+                      <option value="Hindi">Hindi (हिन्दी)</option>
+                      <option value="English">English</option>
+                      <option value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</option>
+                      <option value="Bengali">Bengali (বাংলা)</option>
+                      <option value="Marathi">Marathi (मराठी)</option>
+                      <option value="Telugu">Telugu (తెలుగు)</option>
+                      <option value="Tamil">Tamil (தமிழ்)</option>
+                      <option value="Other">Other</option>
+                    </select>
+                    <span class="select-chevron" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- B. Location Information -->
+            <section class="form-section" aria-labelledby="secLocation">
+              <span class="section-title" id="secLocation">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                Location Information
+              </span>
+
+              <div class="two-col-grid">
+                <!-- State (from Step 1 — Verified Read-Only Chip) -->
+                <div class="form-group">
+                  <label class="form-field-label">State / Union Territory</label>
+                  <div class="state-chip" id="statePreservedDisplay">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <span id="stateNameText">Rajasthan</span>
+                    <span class="step1-tag">Step 1</span>
+                  </div>
+                </div>
+
+                <!-- 3. District -->
+                <div class="form-group">
+                  <label for="districtInput" class="form-field-label">District</label>
+                  <div class="field-wrapper">
+                    <input
+                      type="text"
+                      id="districtInput"
+                      name="district"
+                      class="form-input"
+                      placeholder="Enter district (e.g. Jodhpur)"
+                      autocomplete="address-level2"
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4. Residence type -->
+              <div class="form-group">
+                <label class="form-field-label">Residence type</label>
+                <div class="pills-group" role="radiogroup" aria-label="Residence type">
+                  <div class="pill-item">
+                    <input type="radio" id="resRural" name="residenceType" value="Rural" class="pill-radio-input" checked>
+                    <label for="resRural" class="pill-radio-label">Rural</label>
+                  </div>
+                  <div class="pill-item">
+                    <input type="radio" id="resUrban" name="residenceType" value="Urban" class="pill-radio-input">
+                    <label for="resUrban" class="pill-radio-label">Urban</label>
+                  </div>
+                  <div class="pill-item">
+                    <input type="radio" id="resPNS" name="residenceType" value="Prefer not to say" class="pill-radio-input">
+                    <label for="resPNS" class="pill-radio-label">Prefer not to say</label>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- C. Education & Occupation -->
+            <section class="form-section" aria-labelledby="secEducation">
+              <span class="section-title" id="secEducation">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                  <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                </svg>
+                Education & Occupation
+              </span>
+
+              <div class="two-col-grid">
+                <!-- 5. Highest education level -->
+                <div class="form-group">
+                  <label for="educationLevelSelect" class="form-field-label">Education level</label>
+                  <div class="field-wrapper">
+                    <select id="educationLevelSelect" name="highestEducation" class="form-select">
+                      <option value="" disabled selected>Select level</option>
+                      <option value="No formal education">No formal education</option>
+                      <option value="Primary">Primary (Class 1–5)</option>
+                      <option value="Secondary">Secondary (Class 6–10)</option>
+                      <option value="Higher secondary">Higher secondary (Class 11–12)</option>
+                      <option value="Diploma / ITI">Diploma / ITI</option>
+                      <option value="Undergraduate">Undergraduate (Bachelor's)</option>
+                      <option value="Postgraduate">Postgraduate (Master's)</option>
+                      <option value="Other">Other</option>
+                      <option value="Prefer not to say">Prefer not to say</option>
+                    </select>
+                    <span class="select-chevron" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- 6. Current education status -->
+                <div class="form-group">
+                  <label for="educationStatusSelect" class="form-field-label">Education status</label>
+                  <div class="field-wrapper">
+                    <select id="educationStatusSelect" name="educationStatus" class="form-select">
+                      <option value="" disabled selected>Select status</option>
+                      <option value="Currently studying">Currently studying</option>
+                      <option value="Completed education">Completed education</option>
+                      <option value="Looking for further education">Looking for further education</option>
+                      <option value="Not applicable">Not applicable</option>
+                      <option value="Prefer not to say">Prefer not to say</option>
+                    </select>
+                    <span class="select-chevron" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- 7. Primary occupation -->
+                <div class="form-group">
+                  <label for="occupationSelect" class="form-field-label">Primary occupation</label>
+                  <div class="field-wrapper">
+                    <select id="occupationSelect" name="primaryOccupation" class="form-select">
+                      <option value="" disabled selected>Select occupation</option>
+                      <option value="Student">Student</option>
+                      <option value="Farmer">Farmer (कृषक)</option>
+                      <option value="Salaried employee">Salaried employee</option>
+                      <option value="Daily-wage worker">Daily-wage worker (दैनिक वेतनभोगी)</option>
+                      <option value="Self-employed / Business owner">Self-employed / Business owner</option>
+                      <option value="Homemaker">Homemaker</option>
+                      <option value="Job seeker">Job seeker</option>
+                      <option value="Retired">Retired</option>
+                      <option value="Other">Other</option>
+                      <option value="Prefer not to say">Prefer not to say</option>
+                    </select>
+                    <span class="select-chevron" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- 8. Approximate annual household income -->
+                <div class="form-group">
+                  <label for="incomeSelect" class="form-field-label">
+                    <span>Household income</span>
+                    <span class="label-optional">(Optional)</span>
+                  </label>
+                  <div class="field-wrapper">
+                    <select id="incomeSelect" name="annualIncome" class="form-select">
+                      <option value="" selected>Select income (Optional)</option>
+                      <option value="Below ₹1 lakh">Below ₹1 lakh</option>
+                      <option value="₹1–2.5 lakh">₹1–2.5 lakh</option>
+                      <option value="₹2.5–5 lakh">₹2.5–5 lakh</option>
+                      <option value="₹5–10 lakh">₹5–10 lakh</option>
+                      <option value="Above ₹10 lakh">Above ₹10 lakh</option>
+                      <option value="Prefer not to say">Prefer not to say</option>
+                    </select>
+                    <span class="select-chevron" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Actions Row: Back & Complete Registration -->
+            <div class="actions-row">
+              <button type="button" class="back-btn" id="backToStep1Btn" aria-label="Go back to Step 1">
+                <span aria-hidden="true">←</span>
+                <span>Back</span>
+              </button>
+
+              <button type="submit" class="complete-reg-btn" id="completeRegBtn">
+                <span>Complete Registration</span>
+                <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          </form>
+
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Registration Success Modal Dialog -->
+  <div class="success-modal-backdrop" id="successModalBackdrop" role="dialog" aria-modal="true" aria-labelledby="successTitle">
+    <div class="success-card">
+      <div class="success-check-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <h2 class="success-title" id="successTitle">Registration Completed!</h2>
+      <p class="success-desc">
+        Welcome to BodhSetu, <strong id="successUserName">Citizen</strong>. Your profile has been prepared to match public services and welfare schemes.
+      </p>
+
+      <div class="success-user-pill" id="successUserPill">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <span id="registeredContactText">user@example.com</span>
+      </div>
+
+      <button type="button" class="proceed-login-btn" id="proceedLoginBtn">
+        <span>Proceed to Sign In</span>
+        <span aria-hidden="true">→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Step 2 JavaScript Interactions -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Restore Step 1 Data
+      let step1Data = {};
+      try {
+        const raw = sessionStorage.getItem('bodhsetu_step1_data');
+        if (raw) {
+          step1Data = JSON.parse(raw);
+        }
+      } catch (e) {
+        console.warn('Error reading step1 data', e);
+      }
+
+      // Populate State from Step 1
+      const stateNameText = document.getElementById('stateNameText');
+      if (step1Data.state) {
+        stateNameText.textContent = step1Data.state;
+      } else {
+        stateNameText.textContent = 'Not specified';
+      }
+
+      // Restore any previously selected Step 2 draft if user went Back and came forward
+      try {
+        const step2Draft = JSON.parse(sessionStorage.getItem('bodhsetu_step2_draft') || '{}');
+        if (step2Draft.ageGroup) document.getElementById('ageGroupSelect').value = step2Draft.ageGroup;
+        if (step2Draft.preferredLanguage) document.getElementById('languageSelect').value = step2Draft.preferredLanguage;
+        if (step2Draft.district) document.getElementById('districtInput').value = step2Draft.district;
+        if (step2Draft.residenceType) {
+          const rInput = document.querySelector(`input[name="residenceType"][value="${step2Draft.residenceType}"]`);
+          if (rInput) rInput.checked = true;
+        }
+        if (step2Draft.highestEducation) document.getElementById('educationLevelSelect').value = step2Draft.highestEducation;
+        if (step2Draft.educationStatus) document.getElementById('educationStatusSelect').value = step2Draft.educationStatus;
+        if (step2Draft.primaryOccupation) document.getElementById('occupationSelect').value = step2Draft.primaryOccupation;
+        if (step2Draft.annualIncome) document.getElementById('incomeSelect').value = step2Draft.annualIncome;
+      } catch (err) {
+        console.warn('Error restoring step2 draft', err);
+      }
+
+      // 2. Back Navigation: Save current step 2 progress & return to Step 1 without data loss
+      const backBtn = document.getElementById('backToStep1Btn');
+      backBtn.addEventListener('click', () => {
+        saveStep2Draft();
+        window.location.href = 'register.html';
+      });
+
+      function saveStep2Draft() {
+        const draft = {
+          ageGroup: document.getElementById('ageGroupSelect').value,
+          preferredLanguage: document.getElementById('languageSelect').value,
+          district: document.getElementById('districtInput').value.trim(),
+          residenceType: document.querySelector('input[name="residenceType"]:checked')?.value || 'Rural',
+          highestEducation: document.getElementById('educationLevelSelect').value,
+          educationStatus: document.getElementById('educationStatusSelect').value,
+          primaryOccupation: document.getElementById('occupationSelect').value,
+          annualIncome: document.getElementById('incomeSelect').value
+        };
+        try {
+          sessionStorage.setItem('bodhsetu_step2_draft', JSON.stringify(draft));
+        } catch (e) {
+          console.warn('Could not save step 2 draft', e);
+        }
+      }
+
+      // 3. Form Submission: Complete Registration
+      const profileForm = document.getElementById('profileForm');
+      const completeRegBtn = document.getElementById('completeRegBtn');
+      const successModal = document.getElementById('successModalBackdrop');
+      const successUserName = document.getElementById('successUserName');
+      const registeredContactText = document.getElementById('registeredContactText');
+      const proceedLoginBtn = document.getElementById('proceedLoginBtn');
+
+      profileForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        saveStep2Draft();
+
+        const contact = step1Data.contact || 'Registered Citizen';
+        const name = step1Data.fullName || 'Citizen';
+
+        successUserName.textContent = name;
+        registeredContactText.textContent = contact;
+
+        // Visual completion feedback
+        completeRegBtn.disabled = true;
+        completeRegBtn.style.opacity = '0.85';
+        completeRegBtn.querySelector('span').textContent = 'Finalizing...';
+
+        setTimeout(() => {
+          successModal.classList.add('open');
+        }, 200);
+
+        // Save contact to sessionStorage for prefilling login
+        if (step1Data.contact) {
+          sessionStorage.setItem('bodhsetu_login_contact', step1Data.contact);
+          sessionStorage.setItem('bodhsetu_registered_name', name);
+          sessionStorage.setItem('bodhsetu_just_registered', 'true');
+        }
+
+        // Automatic redirect to login page after 2.8s, or user can click button
+        const redirectTimeout = setTimeout(() => {
+          navigateToLogin(step1Data.contact);
+        }, 2800);
+
+        proceedLoginBtn.addEventListener('click', () => {
+          clearTimeout(redirectTimeout);
+          navigateToLogin(step1Data.contact);
+        });
+      });
+
+      function navigateToLogin(contactVal) {
+        if (contactVal) {
+          window.location.href = `login.html?contact=${encodeURIComponent(contactVal)}&registered=true`;
+        } else {
+          window.location.href = 'login.html?registered=true';
+        }
+      }
+    });
+  </script>
+</body>
+</html>
