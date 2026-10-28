@@ -1604,23 +1604,37 @@
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const digitsOnly = cleaned.replace(/[\s\-\+]/g, '');
 
+        // 1. Mobile Number Detection (10 digits or with country code/leading 0)
         if (/^\d+$/.test(digitsOnly)) {
-          if (digitsOnly.length === 10 || (digitsOnly.length === 12 && digitsOnly.startsWith('91'))) {
-            return { valid: true, type: 'phone', formatted: digitsOnly.slice(-10) };
+          if (digitsOnly.length >= 10) {
+            const core10 = digitsOnly.slice(-10);
+            return {
+              valid: true,
+              type: 'mobile',
+              formatted: core10,
+              candidates: [core10, `+91${core10}`, `91${core10}`, `0${core10}`]
+            };
           } else {
             return { valid: false, message: 'Please enter a valid 10-digit mobile number.' };
           }
         }
 
+        // 2. Email Address Detection
         if (emailPattern.test(cleaned)) {
-          return { valid: true, type: 'email', formatted: cleaned.toLowerCase() };
+          const lowerEmail = cleaned.toLowerCase();
+          return {
+            valid: true,
+            type: 'email',
+            formatted: lowerEmail,
+            candidates: [lowerEmail]
+          };
         }
 
         return { valid: false, message: 'Please enter a valid email address or 10-digit mobile number.' };
       }
 
-      // 3. Form Submission Handling — Pass email/phone to login.html
-      authForm.addEventListener('submit', (e) => {
+      // 3. Form Submission Handling — Direct Routing to Login or Register
+      authForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const rawValue = contactInput.value.trim();
         const result = validateContact(rawValue);
@@ -1634,19 +1648,74 @@
         }
 
         inputWrapper.classList.remove('error');
-        formMessage.className = 'form-message success-text';
-        formMessage.textContent = 'Continuing to Sign In...';
-
-        localStorage.setItem('bodhsetu_login_contact', rawValue);
+        formMessage.textContent = '';
+        formMessage.className = 'form-message';
+        localStorage.setItem('bodhsetu_login_contact', result.formatted);
         
-        const originalText = submitBtn.querySelector('.btn-text').textContent;
         submitBtn.disabled = true;
-        submitBtn.style.opacity = '0.85';
-        submitBtn.querySelector('.btn-text').textContent = 'Connecting...';
+        submitBtn.style.opacity = '0.7';
 
-        setTimeout(() => {
-          window.location.href = `login.html?contact=${encodeURIComponent(rawValue)}`;
-        }, 300);
+        // Method A: Check local Flask Backend
+        try {
+          const response = await fetch('http://127.0.0.1:5000/api/check-user', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contact: rawValue })
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            if (data.exists) {
+              window.location.href = `login.html?contact=${encodeURIComponent(data.contact || result.formatted)}`;
+            } else {
+              window.location.href = `register.html?contact=${encodeURIComponent(data.contact || result.formatted)}`;
+            }
+            return;
+          }
+        } catch (apiErr) {
+          // Fall back to direct Supabase check
+        }
+
+        // Method B: Direct Supabase Cloud check
+        try {
+          const supabaseUrl = 'https://ipxqutjnwyilfbletkir.supabase.co/rest/v1/user_database';
+          const supabaseKey = 'sb_publishable_F2RHMXsrlRD3OYjfHt-YfQ_0x6Sf9O8';
+
+          let queryUrl = '';
+          if (result.type === 'email') {
+            queryUrl = `${supabaseUrl}?contact=eq.${encodeURIComponent(result.formatted)}&select=contact`;
+          } else {
+            const conds = result.candidates.map(c => `contact.eq.${c}`).join(',');
+            queryUrl = `${supabaseUrl}?or=(${conds})&select=contact`;
+          }
+
+          const sbResp = await fetch(queryUrl, {
+            method: 'GET',
+            headers: {
+              'apikey': supabaseKey,
+              'Authorization': `Bearer ${supabaseKey}`
+            }
+          });
+
+          if (sbResp.ok) {
+            const records = await sbResp.json();
+            if (Array.isArray(records) && records.length > 0) {
+              window.location.href = `login.html?contact=${encodeURIComponent(records[0].contact || result.formatted)}`;
+            } else {
+              window.location.href = `register.html?contact=${encodeURIComponent(result.formatted)}`;
+            }
+            return;
+          }
+        } catch (sbErr) {
+          console.error('Supabase query failed:', sbErr);
+        }
+
+        // Reset if connection fails
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+        inputWrapper.classList.add('error');
+        formMessage.className = 'form-message error-text';
+        formMessage.textContent = 'Connection error. Please try again.';
       });
 
       // 4. Language Selector Dropdown
