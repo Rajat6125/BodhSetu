@@ -1435,50 +1435,120 @@
         }
       }
 
-      // 3. Form Submission: Complete Registration
+      // 3. Form Submission: Complete Registration & Insert to Database
       const profileForm = document.getElementById('profileForm');
       const completeRegBtn = document.getElementById('completeRegBtn');
-      const successModal = document.getElementById('successModalBackdrop');
-      const successUserName = document.getElementById('successUserName');
-      const registeredContactText = document.getElementById('registeredContactText');
-      const proceedLoginBtn = document.getElementById('proceedLoginBtn');
 
-      profileForm.addEventListener('submit', (e) => {
+      profileForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        // Verify Step 1 data exists
+        if (!step1Data || !step1Data.contact || !step1Data.fullName || !step1Data.password || !step1Data.state) {
+          alert('Step 1 information is missing. Please fill out Step 1 first.');
+          window.location.href = 'register.html';
+          return;
+        }
 
         saveStep2Draft();
 
-        const contact = step1Data.contact || 'Registered Citizen';
-        const name = step1Data.fullName || 'Citizen';
-
-        successUserName.textContent = name;
-        registeredContactText.textContent = contact;
-
-        // Visual completion feedback
         completeRegBtn.disabled = true;
-        completeRegBtn.style.opacity = '0.85';
-        completeRegBtn.querySelector('span').textContent = 'Finalizing...';
+        completeRegBtn.style.opacity = '0.75';
+        completeRegBtn.querySelector('span').textContent = 'Creating Account...';
 
-        setTimeout(() => {
-          successModal.classList.add('open');
-        }, 200);
+        const step2Data = JSON.parse(sessionStorage.getItem('bodhsetu_step2_draft') || '{}');
 
-        // Save contact to sessionStorage for prefilling login
-        if (step1Data.contact) {
-          sessionStorage.setItem('bodhsetu_login_contact', step1Data.contact);
-          sessionStorage.setItem('bodhsetu_registered_name', name);
-          sessionStorage.setItem('bodhsetu_just_registered', 'true');
+        // Prepare clean payload for Supabase user_database
+        const regPayload = {
+          full_name: step1Data.fullName.trim(),
+          contact: step1Data.contact.trim(),
+          password: step1Data.password,
+          state: step1Data.state.trim(),
+          district: (step2Data.district || '').trim() || null,
+          residence_type: step2Data.residenceType || 'Rural',
+          age_group: step2Data.ageGroup || null,
+          preferred_language: step2Data.preferredLanguage || null,
+          highest_education: step2Data.highestEducation || null,
+          education_status: step2Data.educationStatus || null,
+          primary_occupation: step2Data.primaryOccupation || null,
+          annual_income: step2Data.annualIncome || null,
+          is_active: true
+        };
+
+        let insertedSuccessfully = false;
+
+        // Method 1: Insert via Flask backend API
+        try {
+          const resp = await fetch('http://127.0.0.1:5000/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(regPayload)
+          });
+          const result = await resp.json();
+          if (resp.ok && result.success) {
+            insertedSuccessfully = true;
+            if (result.token) localStorage.setItem('bodhsetu_token', result.token);
+          } else if (resp.status === 409) {
+            alert('An account with this email or mobile number already exists. Redirecting to Sign In.');
+            window.location.href = `login.html?contact=${encodeURIComponent(regPayload.contact)}`;
+            return;
+          }
+        } catch (apiErr) {
+          console.info('Local Flask backend offline, saving directly to Supabase cloud...');
         }
 
-        // Automatic redirect to login page after 2.8s, or user can click button
-        const redirectTimeout = setTimeout(() => {
-          navigateToLogin(step1Data.contact);
-        }, 2800);
+        // Method 2: Direct Supabase Cloud insertion fallback
+        if (!insertedSuccessfully) {
+          try {
+            // Hash password using Web Crypto API SHA-256
+            const enc = new TextEncoder().encode(regPayload.password);
+            const hashBuf = await crypto.subtle.digest('SHA-256', enc);
+            const hashHex = Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
+            const securePayload = { ...regPayload, password: 'sha256:' + hashHex };
 
-        proceedLoginBtn.addEventListener('click', () => {
-          clearTimeout(redirectTimeout);
-          navigateToLogin(step1Data.contact);
-        });
+            const sbUrl = 'https://ipxqutjnwyilfbletkir.supabase.co/rest/v1/user_database';
+            const sbKey = 'sb_publishable_F2RHMXsrlRD3OYjfHt-YfQ_0x6Sf9O8';
+
+            const sbResp = await fetch(sbUrl, {
+              method: 'POST',
+              headers: {
+                'apikey': sbKey,
+                'Authorization': `Bearer ${sbKey}`,
+                'Content-Type': 'application/json',
+                'Prefer': 'return=representation'
+              },
+              body: JSON.stringify(securePayload)
+            });
+
+            if (sbResp.status === 201 || sbResp.status === 200) {
+              insertedSuccessfully = true;
+            } else if (sbResp.status === 409) {
+              alert('An account with this email or mobile number already exists. Redirecting to Sign In.');
+              window.location.href = `login.html?contact=${encodeURIComponent(regPayload.contact)}`;
+              return;
+            } else {
+              const errBody = await sbResp.text();
+              console.error('Supabase direct insert error:', sbResp.status, errBody);
+            }
+          } catch (sbErr) {
+            console.error('Direct Supabase connection error:', sbErr);
+          }
+        }
+
+        if (insertedSuccessfully) {
+          // Clean up draft sessions
+          sessionStorage.removeItem('bodhsetu_step1_data');
+          sessionStorage.removeItem('bodhsetu_step2_draft');
+          sessionStorage.setItem('bodhsetu_just_registered', 'true');
+          sessionStorage.setItem('bodhsetu_login_contact', regPayload.contact);
+
+          // Direct redirect to login page (no screen/modal shown!)
+          window.location.href = `login.html?contact=${encodeURIComponent(regPayload.contact)}&registered=true`;
+        } else {
+          completeRegBtn.disabled = false;
+          completeRegBtn.style.opacity = '1';
+          completeRegBtn.querySelector('span').textContent = 'Complete Registration';
+          alert('Could not save registration to database. Please check your internet connection.');
+        }
       });
 
       function navigateToLogin(contactVal) {
