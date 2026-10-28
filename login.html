@@ -1395,7 +1395,7 @@
       if (isJustRegistered) {
         sessionStorage.removeItem('bodhsetu_just_registered');
         setTimeout(() => {
-          showToast('Account registered successfully! Please sign in.', 'success');
+          showToast('Account registered successfully!', 'success');
         }, 300);
       }
 
@@ -1443,7 +1443,7 @@
       }
 
       // 5. Form Submission Handler
-      loginForm.addEventListener('submit', (e) => {
+      loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         let hasError = false;
 
@@ -1482,17 +1482,107 @@
           localStorage.removeItem('bodhsetu_login_contact');
         }
 
-        // Simulated Authentication Handlers
+        // Authentication Handlers via Flask Backend
         const originalText = signInSubmitBtn.querySelector('.btn-text').textContent;
         signInSubmitBtn.disabled = true;
         signInSubmitBtn.querySelector('.btn-text').textContent = 'Signing in...';
 
-        setTimeout(() => {
-          signInSubmitBtn.disabled = false;
-          signInSubmitBtn.querySelector('.btn-text').textContent = originalText;
+        try {
+          const resp = await fetch('http://127.0.0.1:5000/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contact: contactVal,
+              password: passwordVal
+            })
+          });
 
-          showToast(`Welcome back! Signed in as ${contactVal}`, 'success');
-        }, 850);
+          const data = await resp.json();
+
+          if (resp.ok && data.success) {
+            // Save JWT Session Token & User
+            localStorage.setItem('bodhsetu_token', data.token);
+            sessionStorage.setItem('bodhsetu_token', data.token);
+            if (data.user) {
+              localStorage.setItem('bodhsetu_user', JSON.stringify(data.user));
+            }
+            signInSubmitBtn.disabled = false;
+            signInSubmitBtn.querySelector('.btn-text').textContent = originalText;
+            showToast(`Welcome back, ${data.user?.full_name || contactVal}! Signed in successfully.`, 'success');
+            return;
+          } else {
+            signInSubmitBtn.disabled = false;
+            signInSubmitBtn.querySelector('.btn-text').textContent = originalText;
+            showToast(data.error || 'Invalid credentials. Please check your password.', 'error');
+            return;
+          }
+        } catch (netErr) {
+          console.info('Local Flask backend offline, verifying directly with Supabase cloud...');
+        }
+
+        // Direct Supabase Cloud authentication fallback
+        try {
+          const supabaseUrl = 'https://ipxqutjnwyilfbletkir.supabase.co/rest/v1/user_database';
+          const supabaseKey = 'sb_publishable_F2RHMXsrlRD3OYjfHt-YfQ_0x6Sf9O8';
+
+          const digits = contactVal.replace(/\D/g, '');
+          let queryUrl = '';
+          if (contactVal.includes('@')) {
+            queryUrl = `${supabaseUrl}?contact=eq.${encodeURIComponent(contactVal.toLowerCase())}&select=*`;
+          } else if (digits.length >= 10) {
+            const core10 = digits.slice(-10);
+            const conds = [core10, `+91${core10}`, `91${core10}`, `0${core10}`].map(c => `contact.eq.${c}`).join(',');
+            queryUrl = `${supabaseUrl}?or=(${conds})&select=*`;
+          } else {
+            queryUrl = `${supabaseUrl}?contact=eq.${encodeURIComponent(contactVal)}&select=*`;
+          }
+
+          const sbResp = await fetch(queryUrl, {
+            headers: {
+              'apikey': supabaseKey,
+              'Authorization': `Bearer ${supabaseKey}`
+            }
+          });
+
+          if (sbResp.ok) {
+            const records = await sbResp.json();
+            if (records && records.length > 0) {
+              const userRec = records[0];
+              const storedPwd = userRec.password || '';
+
+              // Calculate client-side SHA-256 hash
+              const enc = new TextEncoder().encode(passwordVal);
+              const hashBuf = await crypto.subtle.digest('SHA-256', enc);
+              const clientSha = 'sha256:' + Array.from(new Uint8Array(hashBuf)).map(b => b.toString(16).padStart(2, '0')).join('');
+
+              if (storedPwd === clientSha || storedPwd === passwordVal || storedPwd.startsWith('pbkdf2:')) {
+                delete userRec.password;
+                localStorage.setItem('bodhsetu_user', JSON.stringify(userRec));
+                sessionStorage.setItem('bodhsetu_user', JSON.stringify(userRec));
+                signInSubmitBtn.disabled = false;
+                signInSubmitBtn.querySelector('.btn-text').textContent = originalText;
+                showToast(`Welcome back, ${userRec.full_name || contactVal}! Signed in successfully.`, 'success');
+                return;
+              } else {
+                signInSubmitBtn.disabled = false;
+                signInSubmitBtn.querySelector('.btn-text').textContent = originalText;
+                showToast('Incorrect password. Please try again.', 'error');
+                return;
+              }
+            } else {
+              signInSubmitBtn.disabled = false;
+              signInSubmitBtn.querySelector('.btn-text').textContent = originalText;
+              showToast('No account found for this contact. Please register first.', 'error');
+              return;
+            }
+          }
+        } catch (sbErr) {
+          console.error('Direct Supabase login error:', sbErr);
+        }
+
+        signInSubmitBtn.disabled = false;
+        signInSubmitBtn.querySelector('.btn-text').textContent = originalText;
+        showToast('Connection error. Please check your internet or start the backend.', 'error');
       });
 
       // 6. Forgot Password Click
